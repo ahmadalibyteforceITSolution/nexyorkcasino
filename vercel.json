@@ -1,12 +1,16 @@
+/* vercel.json - updated to include API routes and function runtime */
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "vite",
   "cleanUrls": true,
   "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ]
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/$1" }
+  ],
+  "functions": {
+    "api/**/*.js": { "runtime": "nodejs18.x" }
+  }
 }
