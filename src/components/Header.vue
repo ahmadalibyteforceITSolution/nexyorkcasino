@@ -1,8 +1,9 @@
 <template>
   <nav class="fixed top-5 left-1/2 -translate-x-1/2 w-[90%] max-w-7xl h-16 glass rounded-2xl flex items-center justify-between px-4 lg:px-6 z-50">
     <div class="flex items-center gap-4 lg:gap-6">
-      <router-link to="/" class="font-outfit font-black text-lg lg:text-xl tracking-widest cursor-pointer">
-        <span class="text-gradient">NEX</span>YORK
+      <router-link to="/" class="flex items-center gap-2 font-outfit font-black text-lg lg:text-xl tracking-widest cursor-pointer group">
+        <img src="/favicon.png" alt="NexYork Logo" class="w-8 h-8 rounded-lg shadow-lg group-hover:scale-110 transition-transform duration-300" />
+        <div><span class="text-gradient">NEX</span>YORK</div>
       </router-link>
       <div class="hidden sm:flex items-center gap-2 bg-green-500/10 border border-green-500/20 px-2 lg:px-3 py-1 rounded-full">
         <span class="w-1 h-1 lg:w-1.5 lg:h-1.5 bg-green-500 rounded-full animate-pulse"></span>
