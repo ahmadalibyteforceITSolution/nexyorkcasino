@@ -1,7 +1,19 @@
 <template>
-  <div class="fixed inset-0 z-[100] bg-dark flex flex-col md:flex-row overflow-hidden">
-    <!-- Sidebar -->
-    <aside class="w-full md:w-64 glass border-r border-white/5 p-6 flex flex-col justify-between">
+  <div class="fixed inset-0 z-[100] bg-dark flex flex-col md:flex-row overflow-hidden font-outfit">
+    <!-- Mobile Header -->
+    <header class="md:hidden glass border-b border-white/5 p-4 flex justify-between items-center z-[110]">
+      <div class="font-black text-xl tracking-widest text-gradient" @click="$emit('close')">NEXYORK</div>
+      <div class="flex items-center gap-4">
+        <button @click="showBetSlip = true" class="relative w-10 h-10 rounded-full glass flex items-center justify-center">
+          <i class="fa-solid fa-receipt text-primary"></i>
+          <span v-if="betSlip.length > 0" class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-[8px] flex items-center justify-center rounded-full text-white font-black">{{ betSlip.length }}</span>
+        </button>
+        <button @click="$emit('close')" class="w-10 h-10 rounded-full glass flex items-center justify-center font-bold">✕</button>
+      </div>
+    </header>
+
+    <!-- Sidebar (Hidden on mobile, replaced by bottom nav) -->
+    <aside class="hidden md:flex w-64 glass border-r border-white/5 p-6 flex-col justify-between">
       <div>
         <div class="font-outfit font-black text-2xl tracking-widest mb-10 text-gradient cursor-pointer" @click="$emit('close')">NEXYORK</div>
         <nav class="space-y-2">
@@ -12,34 +24,20 @@
             class="w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all font-bold text-sm" 
             :class="activeTab === item.id ? 'bg-primary text-black' : 'text-gray-400 hover:bg-white/5'"
           >
-            <i v-if="item.id === 'dashboard'" class="fa-solid fa-chart-pie w-5 text-center"></i>
-            <i v-if="item.id === 'live'" class="fa-solid fa-satellite-dish w-5 text-center"></i>
-            <i v-if="item.id === 'history'" class="fa-solid fa-scroll w-5 text-center"></i>
-            <i v-if="item.id === 'wallet'" class="fa-solid fa-wallet w-5 text-center"></i>
+            <i :class="item.iconClass + ' w-5 text-center'"></i>
             {{ item.label }}
           </button>
         </nav>
       </div>
       
       <div class="space-y-4">
-        <!-- User Profile -->
         <div class="bg-white/5 p-4 rounded-2xl border border-white/10 flex items-center gap-3">
           <div class="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center text-primary font-black uppercase">{{ user?.username?.[0] || 'U' }}</div>
           <div class="min-w-0">
-            <div class="text-[10px] text-gray-500 font-bold uppercase truncate">Logged in as</div>
+            <div class="text-[10px] text-gray-500 font-bold uppercase truncate">Logged in</div>
             <div class="text-sm font-black text-white truncate">{{ user?.username || 'Elite Player' }}</div>
           </div>
         </div>
-
-        <!-- Live Users -->
-        <div class="flex items-center gap-3 bg-green-500/5 p-3 rounded-xl border border-green-500/10">
-          <div class="relative">
-            <div class="w-2 h-2 bg-green-500 rounded-full animate-ping absolute opacity-75"></div>
-            <div class="w-2 h-2 bg-green-500 rounded-full relative"></div>
-          </div>
-          <div class="text-[9px] font-black text-green-500 uppercase tracking-widest">{{ userCount }} PLAYERS ACTIVE</div>
-        </div>
-
         <div class="bg-white/5 p-4 rounded-2xl border border-white/10">
           <div class="text-[9px] text-gray-500 font-bold uppercase mb-1">CASH BALANCE</div>
           <div class="text-xl font-black text-primary">${{ balance.toLocaleString(undefined, { minimumFractionDigits: 2 }) }}</div>
@@ -48,16 +46,28 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 overflow-y-auto p-4 md:p-10 space-y-10 custom-scrollbar relative">
-      <header class="flex justify-between items-center">
+    <main class="flex-1 overflow-y-auto p-4 md:p-10 space-y-6 md:space-y-10 custom-scrollbar relative pb-24 md:pb-10">
+      <header class="hidden md:flex justify-between items-center">
         <div>
-          <h1 class="text-3xl font-black font-outfit uppercase">
-            {{ activeTab === 'dashboard' ? `Welcome, ${user?.username || 'Player'}` : activeTab === 'live' ? 'Sports Feed' : activeTab === 'history' ? 'My Bets' : 'Payments & Withdrawal' }}
+          <h1 class="text-3xl font-black uppercase">
+            {{ activeTabLabel }}
           </h1>
           <p class="text-gray-500 text-[10px] font-black uppercase tracking-widest mt-1">Real-time Data Synchronized via Google Global Feed</p>
         </div>
         <button @click="$emit('close')" class="w-10 h-10 rounded-full glass flex items-center justify-center font-bold hover:bg-red-500 transition-colors">✕</button>
       </header>
+      
+      <!-- Mobile View Title -->
+      <div class="md:hidden mb-2">
+        <h1 class="text-2xl font-black uppercase">{{ activeTabLabel }}</h1>
+        <div class="flex items-center justify-between mt-2">
+          <div class="text-xl font-black text-primary">${{ balance.toLocaleString(undefined, { minimumFractionDigits: 2 }) }}</div>
+          <div class="flex items-center gap-2">
+             <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+             <span class="text-[8px] font-black text-gray-500 uppercase tracking-widest">{{ userCount }} LIVE</span>
+          </div>
+        </div>
+      </div>
 
       <!-- Live Overview / Sports Feed -->
       <div v-if="activeTab === 'dashboard' || activeTab === 'live'" class="space-y-10">
@@ -218,11 +228,59 @@
         <button @click="$emit('place-bet')" :disabled="betSlip.length === 0" class="btn-primary w-full py-4 uppercase tracking-widest text-xs disabled:opacity-30">Place All Bets</button>
       </div>
     </aside>
+    <!-- Mobile Bottom Navigation -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 glass border-t border-white/5 flex justify-around items-center p-4 z-[110] backdrop-blur-xl">
+      <button 
+        v-for="item in menu" 
+        :key="item.id" 
+        @click="activeTab = item.id"
+        class="flex flex-col items-center gap-1 transition-all"
+        :class="activeTab === item.id ? 'text-primary' : 'text-gray-500'"
+      >
+        <i :class="item.iconClass + ' text-lg'"></i>
+        <span class="text-[8px] font-black uppercase tracking-widest">{{ item.label.split(' ')[0] }}</span>
+      </button>
+    </nav>
+
+    <!-- Mobile Bet Slip Modal -->
+    <div v-if="showBetSlip" class="md:hidden fixed inset-0 z-[200] bg-dark animate-in slide-in-from-bottom duration-300">
+      <div class="p-6 h-full flex flex-col">
+        <div class="flex justify-between items-center mb-8">
+          <h3 class="font-black text-2xl uppercase">Your Selections</h3>
+          <button @click="showBetSlip = false" class="w-10 h-10 rounded-full glass flex items-center justify-center font-bold">✕</button>
+        </div>
+        
+        <div class="flex-1 overflow-y-auto space-y-4 pr-2 custom-scrollbar">
+          <div v-if="betSlip.length === 0" class="h-full flex flex-col items-center justify-center text-center opacity-30">
+            <i class="fa-solid fa-receipt text-7xl mb-4"></i>
+            <div class="text-sm font-black uppercase tracking-widest">No active selections</div>
+          </div>
+          
+          <div v-for="bet in betSlip" :key="bet.id" class="glass p-6 rounded-3xl border border-white/10 relative group">
+            <button @click="$emit('remove-bet', bet.id)" class="absolute top-4 right-4 text-red-500">✕</button>
+            <div class="text-[10px] font-black text-primary mb-1 uppercase">{{ bet.match }}</div>
+            <div class="font-black text-lg">{{ bet.selection }}</div>
+            <div class="flex justify-between items-center mt-4">
+              <div class="text-xs text-gray-500">Odds: <span class="text-white font-black">{{ bet.odds }}</span></div>
+              <div class="text-lg text-white font-black">$100.00</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8 pt-8 border-t border-white/10 space-y-4">
+          <div class="flex justify-between font-black text-xl">
+            <span class="text-gray-500">Total Return</span>
+            <span class="text-primary">${{ (betSlip.reduce((acc, b) => acc + (100 * parseFloat(b.odds)), 0)).toLocaleString() }}</span>
+          </div>
+          <button @click="$emit('place-bet'); showBetSlip = false" :disabled="betSlip.length === 0" class="btn-primary w-full py-6 uppercase tracking-widest text-sm disabled:opacity-30">Confirm All Bets</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, watch } from 'vue'
+import { ref, reactive, watch, computed } from 'vue'
 import axios from 'axios'
 import { apiService, API_BASE_URL } from '../services/api'
 
@@ -238,6 +296,7 @@ const props = defineProps({
 })
 
 const activeTab = ref('dashboard')
+const showBetSlip = ref(false)
 const isWithdrawing = ref(false)
 const withdrawForm = reactive({
   accountName: '',
@@ -247,11 +306,16 @@ const withdrawForm = reactive({
 })
 
 const menu = [
-  { id: 'dashboard', label: 'Live Overview', icon: '📊' },
-  { id: 'live', label: 'Sports Feed', icon: '📡' },
-  { id: 'history', label: 'My Bets', icon: '📜' },
-  { id: 'wallet', label: 'Payments', icon: '💳' }
+  { id: 'dashboard', label: 'Dashboard', iconClass: 'fa-solid fa-chart-pie' },
+  { id: 'live', label: 'Sports', iconClass: 'fa-solid fa-satellite-dish' },
+  { id: 'history', label: 'My Bets', iconClass: 'fa-solid fa-scroll' },
+  { id: 'wallet', label: 'Finance', iconClass: 'fa-solid fa-wallet' }
 ]
+
+const activeTabLabel = computed(() => {
+  if (activeTab.value === 'dashboard') return `Welcome, ${props.user?.username || 'Player'}`
+  return menu.find(m => m.id === activeTab.value)?.label || ''
+})
 
 const recentWinners = [
   { id: 1, user: 'AhmedH', amount: '1,240' },
