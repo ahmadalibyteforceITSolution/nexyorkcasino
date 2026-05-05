@@ -410,18 +410,17 @@ app.post('/api/accept-challenge', authenticate, async (req, res) => {
 });
 
 // Live Match Data (Synchronized via Sockets)
-let liveMatches = [
-  // Sports
   { id: 1, league: 'NBA (USA)', time: "Q4 02:45", home: "NY Knicks", homeEmoji: "🏀", homeScore: 102, away: "LA Lakers", awayEmoji: "🏀", awayScore: 98, odds: { home: "1.45", draw: "-", away: "2.80" } },
   { id: 2, league: 'EPL (UK)', time: "88'", home: "Man City", homeEmoji: "⚽", homeScore: 2, away: "Liverpool", awayEmoji: "⚽", awayScore: 2, odds: { home: "2.10", draw: "1.90", away: "3.50" } },
-  { id: 3, league: 'LIGUE 1 (FRANCE)', time: "65'", home: "PSG", homeEmoji: "⚽", homeScore: 3, away: "Marseille", awayEmoji: "⚽", awayScore: 1, odds: { home: "1.10", draw: "5.50", away: "12.00" } },
-  { id: 4, league: 'ISRAEL PREMIER LEAGUE', time: "71'", home: "Maccabi Haifa", homeEmoji: "⚽", homeScore: 3, away: "Hapoel TA", awayEmoji: "⚽", awayScore: 1, odds: { home: "1.20", draw: "4.50", away: "8.00" } },
-  { id: 5, league: 'AFC CHAMPIONS (ASIA)', time: "45'", home: "Al-Hilal", homeEmoji: "⚽", homeScore: 1, away: "Urawa Reds", awayEmoji: "⚽", awayScore: 0, odds: { home: "1.80", draw: "2.80", away: "3.20" } },
-  { id: 6, league: 'IPL CRICKET (INDIA)', time: "18.4 Ov", home: "Mumbai", homeEmoji: "🏏", homeScore: "182/4", away: "CSK", awayEmoji: "🏏", awayScore: "165/6", odds: { home: "1.55", draw: "-", away: "2.40" } },
-  // E-Sports & Casino Simulations
-  { id: 7, league: 'CS:GO MAJOR (GLOBAL)', time: "Rnd 15", home: "FaZe Clan", homeEmoji: "🎮", homeScore: 8, away: "NaVi", awayEmoji: "🎮", awayScore: 7, odds: { home: "1.90", draw: "-", away: "1.90" } },
-  { id: 8, league: 'TEXAS HOLDEM (VIP ROOM)', time: "River", home: "Player 1 (AA)", homeEmoji: "🃏", homeScore: "All In", away: "Player 2 (KK)", awayEmoji: "🃏", awayScore: "Call", odds: { home: "1.10", draw: "-", away: "9.00" } },
-  { id: 9, league: 'VIRTUAL RACING (UK)', time: "Lap 3/5", home: "Red Stallion", homeEmoji: "🏎️", homeScore: "1st", away: "Blue Bolt", awayEmoji: "🏎️", awayScore: "2nd", odds: { home: "2.50", draw: "-", away: "3.10" } }
+  { id: 3, league: 'MLB (USA)', time: "Bot 7th", home: "NY Yankees", homeEmoji: "⚾", homeScore: 4, away: "Boston Red Sox", awayEmoji: "⚾", awayScore: 3, odds: { home: "1.65", draw: "-", away: "2.25" } },
+  { id: 4, league: 'LA LIGA (SPAIN)', time: "34'", home: "Real Madrid", homeEmoji: "⚽", homeScore: 1, away: "Barcelona", awayEmoji: "⚽", awayScore: 0, odds: { home: "1.95", draw: "3.40", away: "3.10" } },
+  { id: 5, league: 'ISRAEL PREMIER LEAGUE', time: "71'", home: "Maccabi Haifa", homeEmoji: "⚽", homeScore: 3, away: "Hapoel TA", awayEmoji: "⚽", awayScore: 1, odds: { home: "1.20", draw: "4.50", away: "8.00" } },
+  { id: 6, league: 'AFC CHAMPIONS (ASIA)', time: "45'", home: "Al-Hilal", homeEmoji: "⚽", homeScore: 1, away: "Urawa Reds", awayEmoji: "⚽", awayScore: 0, odds: { home: "1.80", draw: "2.80", away: "3.20" } },
+  { id: 7, league: 'IPL CRICKET (INDIA)', time: "18.4 Ov", home: "Mumbai", homeEmoji: "🏏", homeScore: "182/4", away: "CSK", awayEmoji: "🏏", awayScore: "165/6", odds: { home: "1.55", draw: "-", away: "2.40" } },
+  { id: 8, league: 'NHL (NORTH AMERICA)', time: "Period 2", home: "NY Rangers", homeEmoji: "🏒", homeScore: 2, away: "Toronto", awayEmoji: "🏒", awayScore: 1, odds: { home: "1.85", draw: "4.00", away: "2.90" } },
+  { id: 9, league: 'CS:GO MAJOR (GLOBAL)', time: "Rnd 15", home: "FaZe Clan", homeEmoji: "🎮", homeScore: 8, away: "NaVi", awayEmoji: "🎮", awayScore: 7, odds: { home: "1.90", draw: "-", away: "1.90" } },
+  { id: 10, league: 'TEXAS HOLDEM (VIP ROOM)', time: "River", home: "Player 1 (AA)", homeEmoji: "🃏", homeScore: "All In", away: "Player 2 (KK)", awayEmoji: "🃏", awayScore: "Call", odds: { home: "1.10", draw: "-", away: "9.00" } },
+  { id: 11, league: 'VIRTUAL RACING (UK)', time: "Lap 3/5", home: "Red Stallion", homeEmoji: "🏎️", homeScore: "1st", away: "Blue Bolt", awayEmoji: "🏎️", awayScore: "2nd", odds: { home: "2.50", draw: "-", away: "3.10" } }
 ];
 
 // Map userId -> socket for real-time personal balance updates
@@ -483,7 +482,10 @@ const globalGameTemplates = [
   { league: 'TENNIS WIMBLEDON', home: 'Alcaraz', homeEmoji: '🎾', away: 'Djokovic', awayEmoji: '🎾', odds: { home: "1.95", draw: "-", away: "1.85" } },
   { league: 'F1 MONACO', home: 'Verstappen', homeEmoji: '🏎️', away: 'Leclerc', awayEmoji: '🏎️', odds: { home: "1.30", draw: "-", away: "4.50" } },
   { league: 'DOTA 2 TI', home: 'Team Spirit', homeEmoji: '🎮', away: 'LGD Gaming', awayEmoji: '🎮', odds: { home: "1.60", draw: "-", away: "2.30" } },
-  { league: 'BLACKJACK VIP', home: 'Dealer', homeEmoji: '🃏', away: 'Player (19)', awayEmoji: '🃏', odds: { home: "2.10", draw: "-", away: "1.80" } }
+  { league: 'BLACKJACK VIP', home: 'Dealer', homeEmoji: '🃏', away: 'Player (19)', awayEmoji: '🃏', odds: { home: "2.10", draw: "-", away: "1.80" } },
+  { league: 'RUGBY WORLD CUP', home: 'New Zealand', homeEmoji: '🏉', away: 'South Africa', awayEmoji: '🏉', odds: { home: "1.50", draw: "20.00", away: "2.60" } },
+  { league: 'MLB (USA)', home: 'LA Dodgers', homeEmoji: '⚾', away: 'SF Giants', awayEmoji: '⚾', odds: { home: "1.60", draw: "-", away: "2.40" } },
+  { league: 'PAK-INDIA SERIES', home: 'Pakistan', homeEmoji: '🏏', away: 'India', awayEmoji: '🏏', odds: { home: "2.10", draw: "-", away: "1.80" } }
 ];
 
 let lastMatchUpdateTime = Date.now();
