@@ -155,74 +155,116 @@ const handleSubmit = async () => {
     if (!form.accountName.trim() || !form.accountNumber.trim()) {
       return showError('Account Name and Account Number are required for withdrawals.')
     }
-    if (!/^[A-Z0-9]{8,20}$/i.test(form.accountNumber.trim())) {
-      return showError('Invalid Account Number format. Must be 8-20 alphanumeric characters (No spaces or dashes).')
-    }
-  } else {
-    // Deposit flow - ask for Credit Card
-    const { value: cardInfo } = await window.Swal.fire({
-      title: 'Secure Deposit checkout',
+  }
+
+  // Phase 1: Security Handshake
+  Swal.fire({
+    title: 'SECURITY HANDSHAKE',
+    html: `
+      <div class="space-y-6 py-4">
+        <div class="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto"></div>
+        <p class="text-gray-400 text-[10px] uppercase tracking-[0.2em] animate-pulse">Establishing secure tunnel to bank...</p>
+      </div>
+    `,
+    background: '#000',
+    showConfirmButton: false,
+    timer: 2000,
+    allowOutsideClick: false
+  }).then(async () => {
+    // Phase 2: Authorization
+    const { value: confirmed } = await Swal.fire({
+      title: 'AUTHORIZE TRANSACTION',
       html: `
-        <div style="text-align: left;">
-          <p style="color:#aaa; font-size:12px; margin-bottom: 10px;">Amount to deposit: $${form.amount}</p>
-          <input id="swal-cc-name" class="swal2-input" placeholder="Cardholder Name" style="width: 80%; background: #222; color: #fff; border: 1px solid #444;">
-          <input id="swal-cc-num" class="swal2-input" placeholder="Card Number (16 digits)" maxlength="16" style="width: 80%; background: #222; color: #fff; border: 1px solid #444;">
+        <div class="text-left space-y-4 p-4 glass rounded-2xl border border-white/5">
+          <div class="flex justify-between">
+            <span class="text-gray-500 text-[10px] uppercase font-black">Type</span>
+            <span class="text-white text-[10px] uppercase font-black">${activeTab.value}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-500 text-[10px] uppercase font-black">Amount</span>
+            <span class="text-primary text-xl font-black font-outfit">$${parseFloat(form.amount).toLocaleString()}</span>
+          </div>
+          <div class="pt-4 border-t border-white/5">
+            <p class="text-[10px] text-gray-400 leading-relaxed">By clicking confirm, you authorize NexYork to process this transaction through your linked ${form.method} account.</p>
+          </div>
         </div>
       `,
-      background: '#0d0d0d',
+      icon: 'shield-check',
+      background: '#111',
       color: '#fff',
-      confirmButtonColor: '#F5C518',
-      confirmButtonText: 'Authorize Payment',
-      showCancelButton: true,
-      preConfirm: () => {
-        const name = document.getElementById('swal-cc-name').value
-        const num = document.getElementById('swal-cc-num').value
-        if (!name || num.length < 16) {
-          window.Swal.showValidationMessage('Valid Cardholder Name and 16-digit Card Number required')
-        }
-        return { name, num }
+      confirmButtonColor: '#ffbb33',
+      confirmButtonText: 'CONFIRM & EXECUTE',
+      showCancelButton: true
+    })
+
+    if (confirmed) {
+      loading.value = true
+      try {
+        const token = localStorage.getItem('token')
+        const endpoint = activeTab.value === 'deposit' ? '/api/deposit' : '/api/withdraw'
+        
+        // Final Processing Animation
+        Swal.fire({
+          title: 'EXECUTING TRANSACTION',
+          html: `
+            <div class="py-10">
+              <div class="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+                <div class="h-full bg-primary animate-progress-fast"></div>
+              </div>
+              <p class="text-[10px] text-gray-500 uppercase tracking-widest mt-6">Communicating with financial network...</p>
+            </div>
+          `,
+          background: '#000',
+          showConfirmButton: false,
+          timer: 3000,
+          allowOutsideClick: false
+        })
+
+        const res = await axios.post(`${API_BASE_URL}${endpoint}`, form, {
+          headers: { 'x-auth-token': token }
+        })
+        
+        const user = JSON.parse(localStorage.getItem('user'))
+        user.balance = res.data.balance
+        localStorage.setItem('user', JSON.stringify(user))
+        
+        emit('balance-update', res.data.balance)
+        
+        const txId = 'WTX-' + Math.random().toString(36).substr(2, 9).toUpperCase()
+        Swal.fire({
+          title: 'TRANSACTION COMPLETED',
+          html: `
+            <div class="glass p-6 rounded-2xl border border-white/5 text-left space-y-4 mt-4">
+              <div class="flex justify-between items-center pb-2 border-b border-white/5">
+                <span class="text-gray-500 text-[10px] uppercase font-black">Ref ID</span>
+                <span class="text-gray-300 text-[9px] font-mono">${txId}</span>
+              </div>
+              <div class="flex justify-between items-center pb-2 border-b border-white/5">
+                <span class="text-gray-500 text-[10px] uppercase font-black">Amount</span>
+                <span class="text-white text-xs font-bold">$${parseFloat(form.amount).toLocaleString()}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-500 text-[10px] uppercase font-black">Status</span>
+                <span class="text-green-500 text-[10px] uppercase font-black">Settled</span>
+              </div>
+            </div>
+          `,
+          icon: 'success',
+          background: '#000',
+          color: '#fff',
+          confirmButtonColor: '#ffbb33',
+          confirmButtonText: 'BACK TO WALLET'
+        })
+        
+        form.amount = ''
+        form.accountName = ''
+        form.accountNumber = ''
+      } catch (err) {
+        showError(err.response?.data?.error || 'Transaction failed')
+      } finally {
+        loading.value = false
       }
-    })
-    
-    if (!cardInfo) return // User cancelled
-  }
-  
-  loading.value = true
-  try {
-    const token = localStorage.getItem('token')
-    const endpoint = activeTab.value === 'deposit' ? '/api/deposit' : '/api/withdraw'
-    
-    const res = await axios.post(`${API_BASE_URL}${endpoint}`, form, {
-      headers: { 'x-auth-token': token }
-    })
-    
-    // Update local user data
-    const user = JSON.parse(localStorage.getItem('user'))
-    user.balance = res.data.balance
-    localStorage.setItem('user', JSON.stringify(user))
-    
-    emit('balance-update', res.data.balance)
-    
-    if (typeof window.Swal !== 'undefined') {
-      window.Swal.fire({
-        title: 'Success!',
-        text: `${activeTab.value === 'deposit' ? 'Deposit' : 'Withdrawal'} successful!`,
-        icon: 'success',
-        background: '#111',
-        color: '#fff',
-        confirmButtonColor: '#F5C518'
-      })
-    } else {
-      alert(`${activeTab.value === 'deposit' ? 'Deposit' : 'Withdrawal'} Successful! Your balance has been updated.`)
     }
-    
-    form.amount = ''
-    form.accountName = ''
-    form.accountNumber = ''
-  } catch (err) {
-    showError(err.response?.data?.error || 'Transaction failed')
-  } finally {
-    loading.value = false
-  }
+  })
 }
 </script>

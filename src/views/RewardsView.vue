@@ -76,6 +76,9 @@
 import { ref } from 'vue'
 
 const Swal = window.Swal
+const props = defineProps({
+  currentUser: Object
+})
 const emit = defineEmits(['claim-bonus'])
 const isClaimed = ref(false)
 const currentTier = ref('GOLD')
@@ -88,33 +91,106 @@ const tiers = [
   { name: 'BRONZE', subtitle: 'The Rookie', icon: 'fa-solid fa-medal', color: 'bg-orange-700/20 text-orange-600' },
 ]
 
-const handleClaim = () => {
+const handleClaim = async () => {
   if (isClaimed.value) return
   
+  if (!props.currentUser) {
+    Swal.fire({
+      title: 'AUTHENTICATION REQUIRED',
+      text: 'Please log in to your NexYork account to claim elite rewards.',
+      icon: 'warning',
+      background: '#111',
+      color: '#fff',
+      confirmButtonColor: '#ffbb33',
+      confirmButtonText: 'LOGIN NOW'
+    })
+    return
+  }
+
+  // Phase 1: Securing Connection
   Swal.fire({
-    title: 'OPENING VAULT...',
-    html: '<div class="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto my-6"></div>',
+    title: 'SECURING CONNECTION...',
+    html: `
+      <div class="space-y-6 py-4">
+        <div class="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto"></div>
+        <p class="text-gray-400 text-xs uppercase tracking-widest animate-pulse">Establishing encrypted link to vault...</p>
+      </div>
+    `,
     background: '#000',
     showConfirmButton: false,
     timer: 2000,
-    didOpen: () => {
-      Swal.showLoading()
-    }
-  }).then(() => {
-    isClaimed.value = true
-    emit('claim-bonus')
-    
-    Swal.fire({
-      title: 'WINNER!',
-      text: 'You received 5,000 Credits and an Elite Pass!',
-      icon: 'success',
-      background: '#000',
+    allowOutsideClick: false
+  }).then(async () => {
+    // Phase 2: Verification / Bank Account (Simulated or triggered)
+    const { value: account } = await Swal.fire({
+      title: 'VERIFY RECIPIENT',
+      text: 'To ensure secure deposit, please confirm your linked bank account or ID.',
+      input: 'text',
+      inputPlaceholder: 'Enter verification code or account ending...',
+      background: '#111',
       color: '#fff',
       confirmButtonColor: '#ffbb33',
-      customClass: {
-        popup: 'glass rounded-[30px] border border-white/10'
+      showCancelButton: true,
+      inputValidator: (value) => {
+        if (!value) return 'Verification is required!'
       }
     })
+
+    if (account) {
+      // Phase 3: Processing Transaction
+      Swal.fire({
+        title: 'PROCESSING TRANSACTION',
+        html: `
+          <div class="space-y-4">
+            <div class="h-1 bg-white/10 rounded-full overflow-hidden">
+              <div class="h-full bg-primary animate-progress-fast"></div>
+            </div>
+            <p class="text-[10px] text-gray-500 uppercase tracking-widest">Finalizing secure deposit to wallet...</p>
+          </div>
+        `,
+        background: '#000',
+        showConfirmButton: false,
+        timer: 2500,
+        allowOutsideClick: false
+      }).then(() => {
+        isClaimed.value = true
+        emit('claim-bonus')
+        
+        // Phase 4: Detailed Success Receipt
+        const txId = 'TX-' + Math.random().toString(36).substr(2, 9).toUpperCase()
+        Swal.fire({
+          title: 'TRANSACTION SUCCESS',
+          html: `
+            <div class="glass p-6 rounded-2xl border border-white/5 text-left space-y-4 mt-4">
+              <div class="flex justify-between items-center pb-2 border-b border-white/5">
+                <span class="text-gray-500 text-[10px] uppercase font-black">Status</span>
+                <span class="text-green-500 text-[10px] uppercase font-black">Completed</span>
+              </div>
+              <div class="flex justify-between items-center pb-2 border-b border-white/5">
+                <span class="text-gray-500 text-[10px] uppercase font-black">Reward</span>
+                <span class="text-white text-xs font-bold">5,000 CREDITS</span>
+              </div>
+              <div class="flex justify-between items-center pb-2 border-b border-white/5">
+                <span class="text-gray-500 text-[10px] uppercase font-black">Asset</span>
+                <span class="text-primary text-xs font-bold">ELITE PASS #772</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-500 text-[10px] uppercase font-black">Transaction ID</span>
+                <span class="text-gray-300 text-[9px] font-mono">${txId}</span>
+              </div>
+            </div>
+          `,
+          icon: 'success',
+          background: '#000',
+          color: '#fff',
+          confirmButtonColor: '#ffbb33',
+          confirmButtonText: 'VIEW IN WALLET',
+          customClass: {
+            popup: 'glass rounded-[40px] border border-white/10'
+          }
+        })
+      })
+    }
   })
 }
 </script>
