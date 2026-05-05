@@ -54,7 +54,12 @@ const userSchema = new mongoose.Schema({
   cryptoBalance: { type: Number, default: 0.00 },
   tokens: { type: Number, default: 0 }, // New Tokens field
   bets: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Bet' }],
-  transactions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Transaction' }]
+  transactions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Transaction' }],
+  bookings: [{
+    placeName: String,
+    date: { type: Date, default: Date.now },
+    status: { type: String, default: 'active' }
+  }]
 });
 
 const betSchema = new mongoose.Schema({
@@ -177,6 +182,7 @@ app.post('/api/buy-tokens', authenticate, async (req, res) => {
 
 app.post('/api/book-vip', authenticate, async (req, res) => {
   try {
+    const { placeName } = req.body;
     const user = await User.findById(req.user.id);
     const COST = 50;
     
@@ -185,9 +191,17 @@ app.post('/api/book-vip', authenticate, async (req, res) => {
     }
     
     user.tokens -= COST;
+    
+    // Save reservation
+    user.bookings.push({ placeName });
+    
+    const trans = new Transaction({ userId: user._id, type: 'withdrawal', amount: -COST, method: `VIP Booking: ${placeName}` });
+    await trans.save();
+    user.transactions.push(trans._id);
+    
     await user.save();
     
-    res.json({ message: 'VIP Table Booked Successfully!', tokens: user.tokens });
+    res.json({ message: 'VIP Table Booked Successfully!', tokens: user.tokens, bookings: user.bookings });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

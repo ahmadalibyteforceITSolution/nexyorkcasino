@@ -194,6 +194,39 @@
         </div>
         <p class="text-center text-[10px] text-gray-500 font-bold uppercase tracking-widest">Withdrawals are processed within 2-4 business hours.</p>
       </div>
+
+      <!-- VIP Reservations -->
+      <div v-if="activeTab === 'reservations'" class="space-y-8">
+        <div v-if="user?.bookings?.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div v-for="(booking, index) in user.bookings" :key="index" class="glass p-8 rounded-[40px] border border-primary/20 relative overflow-hidden group">
+            <div class="absolute -right-10 -top-10 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-all"></div>
+            <div class="flex justify-between items-start mb-6">
+              <div>
+                <div class="text-[10px] text-primary font-black uppercase tracking-[0.3em] mb-1">VIP PASS ACTIVE</div>
+                <h3 class="text-2xl font-black uppercase tracking-tight">{{ booking.placeName }}</h3>
+              </div>
+              <div class="bg-green-500/10 text-green-500 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border border-green-500/20">CONFIRMED</div>
+            </div>
+            
+            <div class="space-y-4">
+              <div class="flex justify-between items-center bg-white/5 p-4 rounded-2xl border border-white/5">
+                <span class="text-[10px] text-gray-500 font-black uppercase">Booking Date</span>
+                <span class="text-xs font-bold text-white">{{ new Date(booking.date).toLocaleDateString() }}</span>
+              </div>
+              <div class="flex justify-between items-center bg-white/5 p-4 rounded-2xl border border-white/5">
+                <span class="text-[10px] text-gray-500 font-black uppercase">Status</span>
+                <span class="text-xs font-bold text-white uppercase tracking-widest">{{ booking.status }}</span>
+              </div>
+            </div>
+            
+            <button class="w-full mt-6 py-4 bg-white/5 border border-white/10 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-primary hover:text-black transition-all">View Digital Ticket</button>
+          </div>
+        </div>
+        <div v-else class="h-64 flex flex-col items-center justify-center text-center glass rounded-3xl opacity-50 border-dashed border-2 border-white/10">
+          <i class="fa-solid fa-key text-5xl mb-4 text-gray-500"></i>
+          <div class="text-xs font-black uppercase tracking-widest">No active VIP reservations</div>
+        </div>
+      </div>
     </main>
 
     <!-- Bet Slip -->
@@ -309,6 +342,7 @@ const menu = [
   { id: 'dashboard', label: 'Dashboard', iconClass: 'fa-solid fa-chart-pie' },
   { id: 'live', label: 'Sports', iconClass: 'fa-solid fa-satellite-dish' },
   { id: 'history', label: 'My Bets', iconClass: 'fa-solid fa-scroll' },
+  { id: 'reservations', label: 'Reservations', iconClass: 'fa-solid fa-key' },
   { id: 'wallet', label: 'Finance', iconClass: 'fa-solid fa-wallet' }
 ]
 

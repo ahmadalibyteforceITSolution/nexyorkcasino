@@ -96,22 +96,33 @@ const handleBookVip = async () => {
 
   isBooking.value = true
   try {
-    const res = await apiService.bookVip()
+    const res = await apiService.bookVip({ placeName: place.value.name })
     
     // Update local storage user data
     const user = JSON.parse(localStorage.getItem('user'))
     user.tokens = res.data.tokens
+    user.bookings = res.data.bookings
     localStorage.setItem('user', JSON.stringify(user))
     
     Swal.fire({
       title: 'Reservation Confirmed!',
-      text: `Your VIP table at ${place.value.name} is booked. 50 Tokens deducted.`,
+      html: `
+        <div class="text-center p-4">
+          <p class="text-gray-400 mb-6 font-bold uppercase tracking-widest text-[10px]">Your VIP Access is Secured</p>
+          <div class="glass p-6 rounded-3xl border border-primary/20 mb-6">
+            <div class="text-[9px] text-primary font-black uppercase tracking-[0.2em] mb-2">Location</div>
+            <div class="text-xl font-black uppercase text-white">${place.value.name}</div>
+          </div>
+          <p class="text-xs text-gray-500 font-bold uppercase tracking-widest">50 Tokens deducted from your vault.</p>
+        </div>
+      `,
       icon: 'success',
       background: '#111',
       color: '#fff',
-      confirmButtonColor: '#F5C518'
+      confirmButtonColor: '#F5C518',
+      confirmButtonText: 'VIEW MY ACCESS'
     }).then(() => {
-      window.location.reload() // Refresh to update header balances
+      window.location.reload() // Refresh to update header and sync dashboard
     })
   } catch (err) {
     Swal.fire({

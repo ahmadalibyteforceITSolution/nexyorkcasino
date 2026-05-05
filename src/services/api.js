@@ -23,7 +23,7 @@ export const apiService = {
   transfer: (data) => axios.post(`${API_BASE_URL}/transfer`, data, authHeader()),
   claimBonus: () => axios.post(`${API_BASE_URL}/claim-bonus`, {}, authHeader()),
   buyTokens: (amount, tokens) => axios.post(`${API_BASE_URL}/buy-tokens`, { amount, tokens }, authHeader()),
-  bookVip: () => axios.post(`${API_BASE_URL}/book-vip`, {}, authHeader()),
+  bookVip: (data) => axios.post(`${API_BASE_URL}/book-vip`, data || {}, authHeader()),
   
   // --- BETTING & GAMING ---
   placeBet: (betData) => axios.post(`${API_BASE_URL}/place-bet`, betData, authHeader()),
