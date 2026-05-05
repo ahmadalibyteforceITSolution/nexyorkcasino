@@ -544,13 +544,14 @@ const updateMatches = () => {
 
 // Casino Roulette Spinner Logic (Lazy Spin for Serverless)
 let lastSpinTime = Date.now();
+let lastSpinNumber = 0;
 const spinCasino = () => {
   const now = Date.now();
   if (now - lastSpinTime > 10000) {
-    const number = Math.floor(Math.random() * 37);
-    io.emit('casinoUpdate', { number });
+    lastSpinNumber = Math.floor(Math.random() * 37);
+    io.emit('casinoUpdate', { number: lastSpinNumber });
     lastSpinTime = now;
-    return number;
+    return lastSpinNumber;
   }
   return null;
 };
@@ -561,6 +562,15 @@ app.use(async (req, res, next) => {
   updateMatches(); // Trigger match update check
   spinCasino(); // Trigger casino spin check
   next();
+});
+
+app.get('/api/casino-state', async (req, res) => {
+  const number = spinCasino(); // This might trigger a new spin
+  res.json({ 
+    number: number || lastSpinNumber, 
+    lastSpinTime,
+    nextSpinIn: Math.max(0, 10000 - (Date.now() - lastSpinTime))
+  });
 });
 
 app.post('/api/resolve-casino-win', authenticate, async (req, res) => {

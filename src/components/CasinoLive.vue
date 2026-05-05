@@ -102,7 +102,8 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { apiService } from '../services/api'
+import axios from 'axios'
+import { apiService, API_BASE_URL } from '../services/api'
 import socket from '../socket'
 
 const Swal = window.Swal
@@ -150,36 +151,50 @@ const handlePlaceBet = async () => {
 };
 
 onMounted(() => {
-  socket.on('casinoUpdate', async (data) => {
-    newNumber.value = data.number;
-    lastNumbers.value.unshift(data.number);
-    if (lastNumbers.value.length > 5) lastNumbers.value.pop();
+  socket.on('casinoUpdate', (data) => handleCasinoResult(data.number));
+
+  // Polling Fallback for Vercel (since WebSockets aren't persistent)
+  setInterval(async () => {
+    try {
+      const res = await axios.get(`${API_BASE_URL.replace('/api', '')}/api/casino-state`);
+      if (res.data.number !== lastNumbers.value[0]) {
+        handleCasinoResult(res.data.number);
+      }
+    } catch (e) {
+      console.warn("Polling failed, relying on socket.");
+    }
+  }, 5000);
+});
+
+const handleCasinoResult = async (number) => {
+  if (newNumber.value === number) return; // Prevent double trigger
+
+  newNumber.value = number;
+  lastNumbers.value.unshift(number);
+  if (lastNumbers.value.length > 5) lastNumbers.value.pop();
+  
+  if (isBetting.value) {
+    const resultColor = number === 0 ? 'green' : (number % 2 === 0 ? 'red' : 'black');
+    const win = selectedColor.value === resultColor;
+    betResult.value = { win };
+    isBetting.value = false;
     
-    // Check bet result if betting
-    if (isBetting.value) {
-      const resultColor = data.number === 0 ? 'green' : (data.number % 2 === 0 ? 'red' : 'black');
-      const win = selectedColor.value === resultColor;
-      betResult.value = { win };
-      isBetting.value = false;
-      
-      if (win) {
-        try {
-          const res = await apiService.resolveCasinoWin(wager.value * 2);
-          
-          const user = JSON.parse(localStorage.getItem('user'));
-          user.balance = res.data.balance;
-          localStorage.setItem('user', JSON.stringify(user));
-        } catch (err) {
-          console.error("Failed to credit winnings:", err);
-        }
+    if (win) {
+      try {
+        const res = await apiService.resolveCasinoWin(wager.value * 2);
+        const user = JSON.parse(localStorage.getItem('user'));
+        user.balance = res.data.balance;
+        localStorage.setItem('user', JSON.stringify(user));
+      } catch (err) {
+        console.error("Failed to credit winnings:", err);
       }
     }
+  }
 
-    setTimeout(() => {
-      newNumber.value = null;
-    }, 4000);
-  });
-});
+  setTimeout(() => {
+    newNumber.value = null;
+  }, 4000);
+};
 </script>
 
 <style scoped>
