@@ -28,9 +28,22 @@ app.use(express.json());
 
 // MongoDB Connection
 const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://ahmedalihafeez25_db_user:%40Sublime12345@cluster0.oe0inne.mongodb.net/newyorkcasiino?retryWrites=true&w=majority";
-mongoose.connect(MONGO_URI)
-  .then(() => console.log('✅ Connected to MongoDB Atlas'))
-  .catch(err => console.error('❌ MongoDB Connection Error:', err));
+
+const connectDB = async () => {
+  if (mongoose.connection.readyState >= 1) return;
+  try {
+    await mongoose.connect(MONGO_URI);
+    console.log('✅ Connected to MongoDB Atlas');
+  } catch (err) {
+    console.error('❌ MongoDB Connection Error:', err);
+  }
+};
+
+// Middleware to ensure DB connection
+app.use(async (req, res, next) => {
+  await connectDB();
+  next();
+});
 
 // Models
 const userSchema = new mongoose.Schema({
