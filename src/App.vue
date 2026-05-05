@@ -64,7 +64,8 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { apiService } from './services/api'
+import axios from 'axios'
+import { apiService, API_BASE_URL } from './services/api'
 import Header from './components/Header.vue'
 import UserDashboard from './components/UserDashboard.vue'
 import AuthModal from './components/AuthModal.vue'
@@ -113,6 +114,16 @@ onMounted(() => {
       }
     }
   })
+
+  // Polling Fallback for Stats (User Count)
+  setInterval(async () => {
+    try {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL || API_BASE_URL}/stats`);
+      userCount.value = res.data.userCount;
+    } catch (e) {
+      console.warn("Stats polling failed");
+    }
+  }, 10000);
 })
 
 const handleLoginSuccess = (user) => {

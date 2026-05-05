@@ -564,6 +564,13 @@ app.use(async (req, res, next) => {
   next();
 });
 
+app.get('/api/stats', (req, res) => {
+  res.json({
+    userCount: Object.keys(userSockets).length || 1,
+    onlineUsers: Object.values(onlineUsernames)
+  });
+});
+
 app.get('/api/casino-state', async (req, res) => {
   const number = spinCasino(); // This might trigger a new spin
   res.json({ 
