@@ -583,6 +583,10 @@ app.get('/api/casino-state', async (req, res) => {
   });
 });
 
+app.get('/api/matches', (req, res) => {
+  res.json(liveMatches);
+});
+
 app.post('/api/resolve-casino-win', authenticate, async (req, res) => {
   try {
     const { amount } = req.body;

@@ -115,15 +115,20 @@ onMounted(() => {
     }
   })
 
-  // Polling Fallback for Stats (User Count)
+  // Polling Fallback for Stats & Matches (Vercel Support)
   setInterval(async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_API_URL || API_BASE_URL}/stats`);
-      userCount.value = res.data.userCount;
+      const statsRes = await axios.get(`${import.meta.env.VITE_API_URL || API_BASE_URL}/stats`);
+      userCount.value = statsRes.data.userCount;
+
+      const matchesRes = await axios.get(`${import.meta.env.VITE_API_URL || API_BASE_URL}/matches`);
+      if (matchesRes.data && Array.isArray(matchesRes.data)) {
+        globalMatches.value = matchesRes.data;
+      }
     } catch (e) {
-      console.warn("Stats polling failed");
+      console.warn("Polling failed", e);
     }
-  }, 10000);
+  }, 5000);
 })
 
 const handleLoginSuccess = (user) => {
