@@ -74,8 +74,8 @@
 
 <script setup>
 import { ref } from 'vue'
-import Swal from 'sweetalert2'
 
+const Swal = window.Swal
 const emit = defineEmits(['claim-bonus'])
 const isClaimed = ref(false)
 const currentTier = ref('GOLD')

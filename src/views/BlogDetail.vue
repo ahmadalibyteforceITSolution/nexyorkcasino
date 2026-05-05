@@ -120,8 +120,8 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { blogs } from '../data/blogs'
-import Swal from 'sweetalert2'
 
+const Swal = window.Swal
 const route = useRoute()
 const blog = computed(() => blogs.find(b => b.slug === route.params.slug))
 
