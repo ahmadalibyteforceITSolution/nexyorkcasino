@@ -6,7 +6,7 @@ export const blogs = [
     category: "Lifestyle",
     date: "May 04, 2026",
     excerpt: "Exploring the provocative underground clubs where the city's elite play after the sun goes down.",
-    image: "https://images.unsplash.com/photo-1574094972776-699742460613?q=80&w=1200&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?q=80&w=1200&auto=format&fit=crop"
   },
   {
     id: 2,
@@ -42,7 +42,7 @@ export const blogs = [
     category: "Gaming",
     date: "April 30, 2026",
     excerpt: "Meet the women dominating the high-stakes games in New York's secret penthouses.",
-    image: "https://images.unsplash.com/photo-1502033006978-dcc20a7a5944?q=80&w=1200&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=1200&auto=format&fit=crop"
   },
   {
     id: 6,
@@ -177,7 +177,7 @@ export const blogs = [
     category: "Strategy",
     date: "April 15, 2026",
     excerpt: "Strategic dating for the high-frequency trader and professional gambler.",
-    image: "https://images.unsplash.com/photo-1544098485-2a246ef2246c?q=80&w=1200&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1516062423079-7ca13cdc7f5a?q=80&w=1200&auto=format&fit=crop"
   },
   {
     id: 21,
@@ -186,7 +186,7 @@ export const blogs = [
     category: "Lifestyle",
     date: "April 14, 2026",
     excerpt: "A tour of the city's most decadent bachelor and bachelorette pads.",
-    image: "https://images.unsplash.com/photo-1511433394755-81539f509e6d?q=80&w=1200&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?q=80&w=1200&auto=format&fit=crop"
   },
   {
     id: 22,
@@ -672,6 +672,6 @@ export const blogs = [
     category: "Strategy",
     date: "February 19, 2026",
     excerpt: "Strategic dating for the high-frequency trader and professional gambler.",
-    image: "https://images.unsplash.com/photo-1544098485-2a246ef2246c?q=80&w=1200&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1200&auto=format&fit=crop"
   }
 ];
