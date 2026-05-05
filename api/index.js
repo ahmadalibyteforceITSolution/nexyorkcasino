@@ -486,10 +486,13 @@ const globalGameTemplates = [
   { league: 'BLACKJACK VIP', home: 'Dealer', homeEmoji: '🃏', away: 'Player (19)', awayEmoji: '🃏', odds: { home: "2.10", draw: "-", away: "1.80" } }
 ];
 
-// Match Logic (Live Updates & Day-to-Day Game Rotation)
-setInterval(() => {
+let lastMatchUpdateTime = Date.now();
+const updateMatches = () => {
+  const now = Date.now();
+  if (now - lastMatchUpdateTime < 3000) return;
+  lastMatchUpdateTime = now;
+
   liveMatches = liveMatches.map(m => {
-    // Occasionally update scores or states
     if (Math.random() > 0.6) {
       if (typeof m.homeScore === 'number') m.homeScore++;
       else if (typeof m.homeScore === 'string') {
@@ -512,21 +515,17 @@ setInterval(() => {
       }
     }
     
-    // Live Odds Fluctuation
     if (Math.random() > 0.5) {
       m.odds.home = (parseFloat(m.odds.home) + (Math.random() * 0.2 - 0.1)).toFixed(2);
       if (m.odds.draw !== '-') m.odds.draw = (parseFloat(m.odds.draw) + (Math.random() * 0.2 - 0.1)).toFixed(2);
       m.odds.away = (parseFloat(m.odds.away) + (Math.random() * 0.2 - 0.1)).toFixed(2);
     }
-    
     return m;
   });
 
-  // Randomly rotate out a game for a new "day-to-day" event (10% chance per tick)
   if (Math.random() > 0.90) {
     const removeIdx = Math.floor(Math.random() * liveMatches.length);
     const newTemplate = globalGameTemplates[Math.floor(Math.random() * globalGameTemplates.length)];
-    
     liveMatches[removeIdx] = {
       id: Date.now(),
       league: newTemplate.league,
@@ -540,15 +539,29 @@ setInterval(() => {
       odds: { ...newTemplate.odds }
     };
   }
-
   io.emit('allMatchesUpdate', liveMatches);
-}, 3000);
+};
 
-// Casino Roulette Spinner Logic
-setInterval(() => {
-  const number = Math.floor(Math.random() * 37); // 0-36
-  io.emit('casinoUpdate', { number });
-}, 10000);
+// Casino Roulette Spinner Logic (Lazy Spin for Serverless)
+let lastSpinTime = Date.now();
+const spinCasino = () => {
+  const now = Date.now();
+  if (now - lastSpinTime > 10000) {
+    const number = Math.floor(Math.random() * 37);
+    io.emit('casinoUpdate', { number });
+    lastSpinTime = now;
+    return number;
+  }
+  return null;
+};
+
+// Middleware to ensure DB connection and trigger lazy updates
+app.use(async (req, res, next) => {
+  await connectDB();
+  updateMatches(); // Trigger match update check
+  spinCasino(); // Trigger casino spin check
+  next();
+});
 
 app.post('/api/resolve-casino-win', authenticate, async (req, res) => {
   try {
