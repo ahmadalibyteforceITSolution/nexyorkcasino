@@ -2,9 +2,10 @@
   <div class="min-h-screen bg-dark overflow-x-hidden relative">
     <!-- Auth Modal -->
     <AuthModal 
-      v-if="!currentUser" 
+      v-if="showAuthModal && !currentUser" 
       :userCount="userCount" 
       @login-success="handleLoginSuccess" 
+      @close="showAuthModal = false"
     />
 
     <TokenBuyModal 
@@ -14,10 +15,11 @@
     />
 
     <Header 
-      v-if="currentUser"
+      :currentUser="currentUser"
       @open-dashboard="showDashboard = true" 
       @open-tokens="showTokenModal = true"
       @logout="handleLogout"
+      @open-auth="showAuthModal = true"
       :balance="balance" 
       :tokens="tokens"
       :cryptoBalance="cryptoBalance"
@@ -25,7 +27,7 @@
     />
     
     <router-view 
-      v-if="currentUser && !showDashboard"
+      v-if="!showDashboard"
       :matches="globalMatches"
       :balance="balance"
       :tokens="tokens"
@@ -86,6 +88,7 @@ const globalMatches = ref([])
 const userCount = ref(0)
 const chatMessages = ref([])
 const recentPublicBets = ref([])
+const showAuthModal = ref(false)
 
 onMounted(() => {
   // Check for stored user
@@ -137,6 +140,7 @@ const handleLoginSuccess = (user) => {
   tokens.value = user.tokens || 0
   cryptoBalance.value = user.cryptoBalance
   apiService.registerUserSocket(user)
+  showAuthModal.value = false
 }
 
 const handleLogout = () => {
@@ -156,6 +160,10 @@ const handleSendMessage = (text) => {
 }
 
 const addToSlip = (data) => {
+  if (!currentUser.value) {
+    showAuthModal.value = true
+    return
+  }
   const { match, type, odds } = data
   const selection = type === 'home' ? match.home : type === 'away' ? match.away : 'Draw'
   betSlip.value.push({
@@ -205,6 +213,10 @@ const handlePlaceBet = () => {
 }
 
 const handlePlaceCasinoBet = (wager) => {
+  if (!currentUser.value) {
+    showAuthModal.value = true
+    return
+  }
   if (tokens.value >= wager) {
     tokens.value -= wager
     // Update local storage
@@ -217,6 +229,10 @@ const handlePlaceCasinoBet = (wager) => {
 }
 
 const handleClaimBonus = async () => {
+  if (!currentUser.value) {
+    showAuthModal.value = true
+    return
+  }
   const { value: accountNumber } = await Swal?.fire({
     title: 'Link Bank Account',
     text: 'Please enter your bank account number to verify and deposit your $100 VIP Bonus instantly.',

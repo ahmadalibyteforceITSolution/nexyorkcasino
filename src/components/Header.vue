@@ -20,7 +20,7 @@
       <router-link to="/wallet" class="hover:text-primary transition-colors">Wallet</router-link>
     </div>
 
-    <div class="flex items-center gap-1.5 md:gap-3">
+    <div v-if="currentUser" class="flex items-center gap-1.5 md:gap-3">
       <!-- Tokens -->
       <button @click="$emit('open-tokens')" class="flex items-center gap-1 md:gap-2 bg-primary/10 px-2 md:px-3 py-1.5 md:py-2 rounded-lg md:rounded-xl border border-primary/30 hover:bg-primary/20 transition-all cursor-pointer">
         <i class="fa-solid fa-coins text-primary text-[10px] md:text-sm"></i>
@@ -41,15 +41,21 @@
         </button>
       </div>
     </div>
+
+    <!-- Guest Actions -->
+    <div v-else class="flex items-center gap-2">
+      <button @click="$emit('open-auth')" class="bg-primary hover:bg-yellow-500 text-black py-2 px-6 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(245,197,24,0.3)]">Join Elite</button>
+    </div>
   </nav>
 </template>
 
 <script setup>
 defineProps({
+  currentUser: Object,
   balance: Number,
   tokens: Number,
   cryptoBalance: Number,
   userCount: Number
 })
-defineEmits(['open-dashboard', 'open-tokens', 'logout'])
+defineEmits(['open-dashboard', 'open-tokens', 'logout', 'open-auth'])
 </script>

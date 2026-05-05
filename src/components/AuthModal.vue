@@ -1,8 +1,12 @@
 <template>
   <div class="fixed inset-0 z-[200] flex items-center justify-center p-4">
-    <div class="absolute inset-0 bg-black/80 backdrop-blur-md"></div>
+    <div class="absolute inset-0 bg-black/80 backdrop-blur-md" @click="$emit('close')"></div>
     
     <div class="relative w-full max-w-md glass p-10 rounded-[40px] border-primary/20 text-center animate-in zoom-in duration-300 shadow-2xl">
+      <button @click="$emit('close')" class="absolute right-6 top-6 w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-red-500/20 hover:text-red-500 transition-all group">
+        <i class="fa-solid fa-xmark group-hover:rotate-90 transition-transform"></i>
+      </button>
+
       <div class="text-gradient font-outfit font-black text-4xl tracking-widest mb-2">NEXYORK</div>
       <p class="text-[10px] font-black text-gray-500 uppercase tracking-[0.4em] mb-10">
         {{ view === 'login' ? 'Sign in to your account' : view === 'register' ? 'Join the elite arena' : 'Recover your account' }}
@@ -73,7 +77,7 @@ defineProps({
   userCount: Number
 })
 
-const emit = defineEmits(['login-success'])
+const emit = defineEmits(['login-success', 'close'])
 
 const view = ref('login') // 'login', 'register', 'forgot', 'reset'
 const loading = ref(false)
