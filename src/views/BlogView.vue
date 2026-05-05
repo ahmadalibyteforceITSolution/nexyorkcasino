@@ -47,7 +47,7 @@ const blogs = [
     category: "Lifestyle",
     date: "May 03, 2026",
     excerpt: "From Manhattan to Brooklyn, we've curated the most glamorous spots to watch the sunset with a VIP view.",
-    image: "https://images.unsplash.com/photo-1541535650810-10d26f5c2abb?q=80&w=800&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1511193311914-0346f16efe90?q=80&w=800&auto=format&fit=crop"
   },
   {
     id: 3,

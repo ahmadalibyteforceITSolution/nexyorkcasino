@@ -66,13 +66,13 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 
-const backgrounds = [
-  "https://images.unsplash.com/photo-1566417713940-0e41fcc519a4?q=80&w=1920&auto=format&fit=crop",
+const bgImages = [
+  "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=1920&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1920&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1541535650810-10d26f5c2abb?q=80&w=1920&auto=format&fit=crop"
+  "https://images.unsplash.com/photo-1518546305927-5a555bb7020d?q=80&w=1920&auto=format&fit=crop"
 ];
 
-const currentBg = ref(backgrounds[0]);
+const currentBg = ref(bgImages[0]);
 
 const liveVips = [
   { name: 'Bella_NY', win: '2,400', avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=200&auto=format&fit=crop' },

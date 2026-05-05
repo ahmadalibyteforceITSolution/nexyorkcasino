@@ -51,7 +51,7 @@ const places = [
     name: "The Velvet Room",
     category: "Club",
     vip: true,
-    image: "https://images.unsplash.com/photo-1566417713940-0e41fcc519a4?q=80&w=800&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1606167668584-78701c57f13d?q=80&w=800&auto=format&fit=crop",
     desc: "The most exclusive underground club in Manhattan, reserved for the city's top players."
   },
   {
