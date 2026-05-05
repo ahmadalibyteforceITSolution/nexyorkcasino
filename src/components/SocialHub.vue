@@ -65,6 +65,8 @@
 
 <script setup>
 import { ref, watch, nextTick } from 'vue'
+import socket from '../socket'
+import { apiService } from '../services/api'
 
 const props = defineProps({
   messages: Array,
