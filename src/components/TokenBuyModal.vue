@@ -72,6 +72,7 @@
 <script setup>
 import { ref } from 'vue'
 import axios from 'axios'
+import { API_BASE_URL } from '../services/api'
 
 const emit = defineEmits(['close', 'purchase-success'])
 const loading = ref(false)
@@ -93,7 +94,7 @@ const handleBuy = async () => {
   loading.value = true
   try {
     const token = localStorage.getItem('token')
-    const res = await axios.post('http://localhost:5000/api/buy-tokens', { amount: selectedPackage.value.price, tokens: selectedPackage.value.tokens }, {
+    const res = await axios.post(`${API_BASE_URL}/buy-tokens`, { amount: selectedPackage.value.price, tokens: selectedPackage.value.tokens }, {
       headers: { 'x-auth-token': token }
     })
     

@@ -555,4 +555,8 @@ app.post('/api/resolve-casino-win', authenticate, async (req, res) => {
   }
 });
 
-server.listen(PORT, () => console.log(`🚀 Live Server on ${PORT}`));
+if (process.env.NODE_ENV !== 'production') {
+  server.listen(PORT, () => console.log(`🚀 Live Server on ${PORT}`));
+}
+
+export default app;

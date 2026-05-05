@@ -1,7 +1,9 @@
 import axios from 'axios';
 import socket from '../socket';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const defaultUrl = isLocal ? 'http://localhost:5000' : window.location.origin;
+export const API_BASE_URL = import.meta.env.VITE_API_URL || `${defaultUrl}/api`;
 
 // Helper for authenticated requests
 const authHeader = () => ({

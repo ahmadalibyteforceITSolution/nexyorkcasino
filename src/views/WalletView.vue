@@ -113,6 +113,7 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import axios from 'axios'
+import { API_BASE_URL } from '../services/api'
 
 const props = defineProps({
   balance: Number,
@@ -191,7 +192,7 @@ const handleSubmit = async () => {
     const token = localStorage.getItem('token')
     const endpoint = activeTab.value === 'deposit' ? '/api/deposit' : '/api/withdraw'
     
-    const res = await axios.post(`http://localhost:5000${endpoint}`, form, {
+    const res = await axios.post(`${API_BASE_URL}${endpoint}`, form, {
       headers: { 'x-auth-token': token }
     })
     

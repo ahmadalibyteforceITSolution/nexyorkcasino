@@ -223,7 +223,8 @@
 
 <script setup>
 import { ref, reactive, watch } from 'vue'
-import { apiService } from '../services/api'
+import axios from 'axios'
+import { apiService, API_BASE_URL } from '../services/api'
 
 const Swal = window.Swal
 
@@ -292,7 +293,7 @@ const handleWithdraw = async () => {
   isWithdrawing.value = true
   try {
     const token = localStorage.getItem('token')
-    const res = await axios.post('http://localhost:5000/api/withdraw', {
+    const res = await axios.post(`${API_BASE_URL}/withdraw`, {
       amount: withdrawForm.amount,
       method: `Bank Transfer (${withdrawForm.bankName}) - ${withdrawForm.accountNumber}`
     }, { headers: { 'x-auth-token': token } })
