@@ -83,8 +83,8 @@ const liveVips = [
 onMounted(() => {
   let i = 0;
   setInterval(() => {
-    i = (i + 1) % backgrounds.length;
-    currentBg.value = backgrounds[i];
+    i = (i + 1) % bgImages.length;
+    currentBg.value = bgImages[i];
   }, 5000);
 });
 
