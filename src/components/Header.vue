@@ -34,7 +34,12 @@
       </div>
       
       <div class="flex items-center gap-1 md:gap-2">
-        <button @click="$emit('open-dashboard')" class="bg-primary hover:bg-yellow-500 text-black py-1.5 md:py-2 px-3 md:px-5 rounded-lg md:rounded-xl text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all">Profile</button>
+        <button @click="$emit('open-dashboard')" class="relative bg-primary hover:bg-yellow-500 text-black py-1.5 md:py-2 px-3 md:px-5 rounded-lg md:rounded-xl text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all">
+          Profile
+          <span v-if="slipCount > 0" class="absolute -top-2 -right-2 w-5 h-5 bg-red-600 text-white rounded-full flex items-center justify-center text-[8px] font-black border-2 border-dark animate-bounce">
+            {{ slipCount }}
+          </span>
+        </button>
         <button @click="$emit('logout')" class="bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white py-1.5 md:py-2 px-2 md:px-4 rounded-lg md:rounded-xl border border-red-500/20 text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all group">
           <span class="hidden md:inline">Logout</span>
           <span class="md:hidden">✕</span>
@@ -55,7 +60,8 @@ defineProps({
   balance: Number,
   tokens: Number,
   cryptoBalance: Number,
-  userCount: Number
+  userCount: Number,
+  slipCount: Number
 })
 defineEmits(['open-dashboard', 'open-tokens', 'logout', 'open-auth'])
 </script>

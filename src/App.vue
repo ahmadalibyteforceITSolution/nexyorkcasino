@@ -24,6 +24,7 @@
       :tokens="tokens"
       :cryptoBalance="cryptoBalance"
       :userCount="userCount"
+      :slipCount="betSlip.length"
     />
     
     <router-view 
@@ -32,6 +33,7 @@
       :balance="balance"
       :tokens="tokens"
       :cryptoBalance="cryptoBalance"
+      :currentUser="currentUser"
       @claim-bonus="handleClaimBonus"
       @add-to-slip="addToSlip"
       @place-bet="handlePlaceCasinoBet"
@@ -173,6 +175,7 @@ const addToSlip = (data) => {
     odds,
     stake: 100
   })
+  showDashboard.value = true // Automatically open dashboard to show the slip
 }
 
 const removeBet = (id) => betSlip.value = betSlip.value.filter(b => b.id !== id)
