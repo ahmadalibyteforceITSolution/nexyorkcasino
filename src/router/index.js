@@ -4,6 +4,7 @@ import ArenaView from '../views/ArenaView.vue'
 import WalletView from '../views/WalletView.vue'
 import RewardsView from '../views/RewardsView.vue'
 import BlogView from '../views/BlogView.vue'
+import BlogDetail from '../views/BlogDetail.vue'
 import DiscoveryDetail from '../views/DiscoveryDetail.vue'
 
 const routes = [
@@ -12,6 +13,7 @@ const routes = [
   { path: '/wallet', name: 'wallet', component: WalletView },
   { path: '/rewards', name: 'rewards', component: RewardsView },
   { path: '/magazine', name: 'magazine', component: BlogView },
+  { path: '/magazine/:slug', name: 'magazine-detail', component: BlogDetail },
   { path: '/discovery/:id', name: 'discovery-detail', component: DiscoveryDetail },
 ]
 
