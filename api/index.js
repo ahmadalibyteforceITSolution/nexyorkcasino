@@ -410,6 +410,7 @@ app.post('/api/accept-challenge', authenticate, async (req, res) => {
 });
 
 // Live Match Data (Synchronized via Sockets)
+let liveMatches = [
   { id: 1, league: 'NBA (USA)', time: "Q4 02:45", home: "NY Knicks", homeEmoji: "🏀", homeScore: 102, away: "LA Lakers", awayEmoji: "🏀", awayScore: 98, odds: { home: "1.45", draw: "-", away: "2.80" } },
   { id: 2, league: 'EPL (UK)', time: "88'", home: "Man City", homeEmoji: "⚽", homeScore: 2, away: "Liverpool", awayEmoji: "⚽", awayScore: 2, odds: { home: "2.10", draw: "1.90", away: "3.50" } },
   { id: 3, league: 'MLB (USA)', time: "Bot 7th", home: "NY Yankees", homeEmoji: "⚾", homeScore: 4, away: "Boston Red Sox", awayEmoji: "⚾", awayScore: 3, odds: { home: "1.65", draw: "-", away: "2.25" } },
