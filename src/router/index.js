@@ -25,4 +25,37 @@ const router = createRouter({
   }
 })
 
+// SEO: Global Trailing Slash Removal & Canonical Tags
+router.beforeEach((to, from, next) => {
+  if (to.path !== '/' && to.path.endsWith('/')) {
+    const nextPath = to.path.slice(0, -1);
+    next({ path: nextPath, query: to.query, hash: to.hash });
+  } else {
+    next();
+  }
+});
+
+router.afterEach((to) => {
+  // Update Canonical Tag
+  let canonical = document.querySelector('link[rel="canonical"]');
+  if (!canonical) {
+    canonical = document.createElement('link');
+    canonical.setAttribute('rel', 'canonical');
+    document.head.appendChild(canonical);
+  }
+  const baseUrl = 'https://nexyorkcasino.vercel.app';
+  const path = to.path === '/' ? '' : to.path.replace(/\/$/, '');
+  canonical.setAttribute('href', `${baseUrl}${path}`);
+
+  // Update Page Title
+  const siteTitle = 'NexYork - Elite Casino & Sports Exchange';
+  if (to.meta.title) {
+    document.title = `${to.meta.title} | ${siteTitle}`;
+  } else if (to.name === 'magazine-detail' && to.params.slug) {
+    // Dynamic title for magazine
+    const slugParts = to.params.slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1));
+    document.title = `${slugParts.join(' ')} | NexYork Magazine`;
+  }
+});
+
 export default router

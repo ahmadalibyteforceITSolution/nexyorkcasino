@@ -2,7 +2,7 @@
   <nav class="fixed top-2 md:top-5 left-1/2 -translate-x-1/2 w-[95%] lg:w-[90%] max-w-7xl h-14 md:h-16 glass rounded-xl md:rounded-2xl flex items-center justify-between px-3 md:px-6 z-50">
     <div class="flex items-center gap-2 md:gap-6">
       <router-link to="/" class="flex items-center gap-2 font-outfit font-black text-sm md:text-xl tracking-widest cursor-pointer group">
-        <img src="/favicon.png" alt="NexYork Logo" class="w-6 h-6 md:w-8 md:h-8 rounded-lg shadow-lg group-hover:scale-110 transition-transform duration-300" />
+        <img src="/favicon.png" alt="NexYork Logo" width="32" height="32" class="w-6 h-6 md:w-8 md:h-8 rounded-lg shadow-lg group-hover:scale-110 transition-transform duration-300" />
         <div class="hidden xs:block"><span class="text-gradient">NEX</span>YORK</div>
         <div class="xs:hidden text-gradient">N</div>
       </router-link>
@@ -22,7 +22,7 @@
 
     <div v-if="currentUser" class="flex items-center gap-1.5 md:gap-3">
       <!-- Tokens -->
-      <button @click="$emit('open-tokens')" class="flex items-center gap-1 md:gap-2 bg-primary/10 px-2 md:px-3 py-1.5 md:py-2 rounded-lg md:rounded-xl border border-primary/30 hover:bg-primary/20 transition-all cursor-pointer">
+      <button @click="$emit('open-tokens')" aria-label="Buy Tokens" class="flex items-center gap-1 md:gap-2 bg-primary/10 px-2 md:px-3 py-1.5 md:py-2 rounded-lg md:rounded-xl border border-primary/30 hover:bg-primary/20 transition-all cursor-pointer">
         <i class="fa-solid fa-coins text-primary text-[10px] md:text-sm"></i>
         <span class="hidden sm:inline text-[9px] md:text-[11px] font-black text-primary tracking-widest">{{ tokens?.toLocaleString() || 0 }}</span>
       </button>
@@ -40,7 +40,7 @@
             {{ slipCount }}
           </span>
         </button>
-        <button @click="$emit('logout')" class="bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white py-1.5 md:py-2 px-2 md:px-4 rounded-lg md:rounded-xl border border-red-500/20 text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all group">
+        <button @click="$emit('logout')" aria-label="Logout" class="bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white py-1.5 md:py-2 px-2 md:px-4 rounded-lg md:rounded-xl border border-red-500/20 text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all group">
           <span class="hidden md:inline">Logout</span>
           <span class="md:hidden">✕</span>
         </button>

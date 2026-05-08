@@ -17,12 +17,12 @@
 
     <!-- Main Image -->
     <div class="relative rounded-[60px] overflow-hidden aspect-[16/9] mb-16 glass group border border-white/5">
-      <img :src="blog.image" :alt="blog.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[2000ms]">
+      <img :src="blog.image" :alt="blog.title" loading="lazy" width="1200" height="675" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[2000ms]">
       <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
       <div class="absolute bottom-10 left-10">
         <div class="flex items-center gap-4">
           <div class="w-12 h-12 rounded-full border-2 border-primary overflow-hidden">
-            <img src="https://i.pravatar.cc/150?u=author" alt="Author">
+            <img src="https://i.pravatar.cc/150?u=author" alt="Author" width="48" height="48">
           </div>
           <div>
             <div class="text-[10px] font-black uppercase tracking-widest text-primary">Exclusive Report by</div>
@@ -98,10 +98,11 @@
           <input 
             v-model="newComment" 
             @keyup.enter="addComment"
+            aria-label="Add a comment"
             placeholder="LEAVE YOUR MARK ON THE ARENA..." 
             class="w-full bg-white/5 border border-white/10 rounded-full py-6 px-10 text-xs font-bold tracking-widest focus:outline-none focus:border-primary/50 transition-all uppercase placeholder:text-gray-700"
           >
-          <button @click="addComment" class="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-primary rounded-full text-black flex items-center justify-center hover:scale-110 transition-all">
+          <button @click="addComment" aria-label="Submit Comment" class="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-primary rounded-full text-black flex items-center justify-center hover:scale-110 transition-all">
             ➜
           </button>
         </div>

@@ -3,7 +3,7 @@
     <div class="absolute inset-0 bg-black/80 backdrop-blur-md" @click="$emit('close')"></div>
     
     <div class="relative w-full max-w-md glass p-10 rounded-[40px] border-primary/20 text-center animate-in zoom-in duration-300 shadow-2xl">
-      <button @click="$emit('close')" class="absolute right-6 top-6 w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-red-500/20 hover:text-red-500 transition-all group">
+      <button @click="$emit('close')" aria-label="Close Authentication" class="absolute right-6 top-6 w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-red-500/20 hover:text-red-500 transition-all group">
         <i class="fa-solid fa-xmark group-hover:rotate-90 transition-transform"></i>
       </button>
 
@@ -15,19 +15,19 @@
       <div class="space-y-4">
         <div v-if="view === 'register'" class="relative">
           <i class="fa-solid fa-user absolute left-5 top-1/2 -translate-y-1/2 text-gray-600"></i>
-          <input v-model="form.username" type="text" placeholder="USERNAME" class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-6 font-black outline-none focus:border-primary transition-all placeholder:text-gray-700 text-sm tracking-widest uppercase">
+          <input v-model="form.username" type="text" aria-label="Username" placeholder="USERNAME" class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-6 font-black outline-none focus:border-primary transition-all placeholder:text-gray-700 text-sm tracking-widest uppercase">
         </div>
         <div class="relative">
           <i class="fa-solid fa-envelope absolute left-5 top-1/2 -translate-y-1/2 text-gray-600"></i>
-          <input v-model="form.email" type="email" placeholder="EMAIL ADDRESS" class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-6 font-black outline-none focus:border-primary transition-all placeholder:text-gray-700 text-sm tracking-widest uppercase">
+          <input v-model="form.email" type="email" aria-label="Email Address" placeholder="EMAIL ADDRESS" class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-6 font-black outline-none focus:border-primary transition-all placeholder:text-gray-700 text-sm tracking-widest uppercase">
         </div>
         <div v-if="view !== 'forgot'" class="relative">
           <i class="fa-solid fa-lock absolute left-5 top-1/2 -translate-y-1/2 text-gray-600"></i>
-          <input v-model="form.password" type="password" placeholder="PASSWORD" class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-6 font-black outline-none focus:border-primary transition-all placeholder:text-gray-700 text-sm tracking-widest uppercase">
+          <input v-model="form.password" type="password" aria-label="Password" placeholder="PASSWORD" class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-6 font-black outline-none focus:border-primary transition-all placeholder:text-gray-700 text-sm tracking-widest uppercase">
         </div>
         <div v-if="view === 'reset'" class="relative">
           <i class="fa-solid fa-key absolute left-5 top-1/2 -translate-y-1/2 text-gray-600"></i>
-          <input v-model="form.newPassword" type="password" placeholder="NEW PASSWORD" class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-6 font-black outline-none focus:border-primary transition-all placeholder:text-gray-700 text-sm tracking-widest uppercase">
+          <input v-model="form.newPassword" type="password" aria-label="New Password" placeholder="NEW PASSWORD" class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-6 font-black outline-none focus:border-primary transition-all placeholder:text-gray-700 text-sm tracking-widest uppercase">
         </div>
         
         <div v-if="error" class="text-red-500 text-[10px] font-black uppercase tracking-widest animate-pulse flex items-center justify-center gap-2"><i class="fa-solid fa-circle-exclamation"></i> {{ error }}</div>

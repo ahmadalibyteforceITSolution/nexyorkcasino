@@ -4,11 +4,11 @@
     <header class="md:hidden glass border-b border-white/5 p-4 flex justify-between items-center z-[110]">
       <div class="font-black text-xl tracking-widest text-gradient" @click="$emit('close')">NEXYORK</div>
       <div class="flex items-center gap-4">
-        <button @click="showBetSlip = true" class="relative w-10 h-10 rounded-full glass flex items-center justify-center">
+        <button @click="showBetSlip = true" aria-label="View Bet Slip" class="relative w-10 h-10 rounded-full glass flex items-center justify-center">
           <i class="fa-solid fa-receipt text-primary"></i>
           <span v-if="betSlip.length > 0" class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-[8px] flex items-center justify-center rounded-full text-white font-black">{{ betSlip.length }}</span>
         </button>
-        <button @click="$emit('close')" class="w-10 h-10 rounded-full glass flex items-center justify-center font-bold">✕</button>
+        <button @click="$emit('close')" aria-label="Close Dashboard" class="w-10 h-10 rounded-full glass flex items-center justify-center font-bold">✕</button>
       </div>
     </header>
 
@@ -54,7 +54,7 @@
           </h1>
           <p class="text-gray-500 text-[10px] font-black uppercase tracking-widest mt-1">Real-time Data Synchronized via Google Global Feed</p>
         </div>
-        <button @click="$emit('close')" class="w-10 h-10 rounded-full glass flex items-center justify-center font-bold hover:bg-red-500 transition-colors">✕</button>
+        <button @click="$emit('close')" aria-label="Close Dashboard" class="w-10 h-10 rounded-full glass flex items-center justify-center font-bold hover:bg-red-500 transition-colors">✕</button>
       </header>
       
       <!-- Mobile View Title -->
@@ -183,7 +183,7 @@
             <div>
               <label class="text-[10px] text-gray-500 font-black uppercase tracking-widest mb-2 block">Withdrawal Amount</label>
               <div class="relative">
-                <input v-model="withdrawForm.amount" type="number" placeholder="Min. $100" class="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-6 font-black outline-none focus:border-primary transition-all text-2xl text-primary pl-10">
+                <input v-model="withdrawForm.amount" type="number" aria-label="Withdrawal Amount" placeholder="Min. $100" class="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-6 font-black outline-none focus:border-primary transition-all text-2xl text-primary pl-10">
                 <span class="absolute left-6 top-1/2 -translate-y-1/2 text-2xl font-black text-gray-400">$</span>
               </div>
             </div>
@@ -243,7 +243,7 @@
         </div>
         
         <div v-for="bet in betSlip" :key="bet.id" class="bg-white/5 p-4 rounded-xl border border-white/10 relative group">
-          <button @click="$emit('remove-bet', bet.id)" class="absolute top-2 right-2 text-gray-600 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100">✕</button>
+          <button @click="$emit('remove-bet', bet.id)" aria-label="Remove Bet" class="absolute top-2 right-2 text-gray-600 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100">✕</button>
           <div class="text-[9px] font-black text-primary mb-1 uppercase tracking-tighter">{{ bet.match }}</div>
           <div class="font-bold text-sm">{{ bet.selection }}</div>
           <div class="flex justify-between items-center mt-3">
@@ -280,7 +280,7 @@
       <div class="p-6 h-full flex flex-col">
         <div class="flex justify-between items-center mb-8">
           <h3 class="font-black text-2xl uppercase">Your Selections</h3>
-          <button @click="showBetSlip = false" class="w-10 h-10 rounded-full glass flex items-center justify-center font-bold">✕</button>
+          <button @click="showBetSlip = false" aria-label="Close Bet Slip" class="w-10 h-10 rounded-full glass flex items-center justify-center font-bold">✕</button>
         </div>
         
         <div class="flex-1 overflow-y-auto space-y-4 pr-2 custom-scrollbar">
@@ -290,7 +290,7 @@
           </div>
           
           <div v-for="bet in betSlip" :key="bet.id" class="glass p-6 rounded-3xl border border-white/10 relative group">
-            <button @click="$emit('remove-bet', bet.id)" class="absolute top-4 right-4 text-red-500">✕</button>
+            <button @click="$emit('remove-bet', bet.id)" aria-label="Remove Bet" class="absolute top-4 right-4 text-red-500">✕</button>
             <div class="text-[10px] font-black text-primary mb-1 uppercase">{{ bet.match }}</div>
             <div class="font-black text-lg">{{ bet.selection }}</div>
             <div class="flex justify-between items-center mt-4">

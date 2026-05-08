@@ -15,7 +15,7 @@
       <div class="grid grid-cols-1 xl:grid-cols-4 gap-8">
         <!-- Live Stream with Sexy Visuals -->
         <div class="xl:col-span-3 relative rounded-[60px] overflow-hidden border border-white/10 aspect-video group shadow-2xl bg-dark-card">
-          <img src="https://images.unsplash.com/photo-1596838132731-3301c3fd4317?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover brightness-[0.4] group-hover:scale-110 transition-transform duration-1000" alt="Casino Live">
+          <img src="https://images.unsplash.com/photo-1596838132731-3301c3fd4317?q=80&w=1200&auto=format&fit=crop" loading="lazy" width="1200" height="800" class="w-full h-full object-cover brightness-[0.4] group-hover:scale-110 transition-transform duration-1000" alt="Casino Live">
           
           <div class="absolute inset-0 bg-gradient-to-t from-dark/90 via-transparent to-transparent"></div>
           
@@ -80,7 +80,7 @@
               <div class="pt-6">
                 <div class="text-[10px] text-gray-500 font-black mb-3 uppercase tracking-widest">Your Wager</div>
                 <div class="relative">
-                  <input type="number" v-model="wager" class="w-full bg-white/5 border-2 border-white/5 rounded-2xl py-5 px-6 font-black outline-none focus:border-primary transition-all text-2xl text-white">
+                  <input type="number" v-model="wager" aria-label="Your Wager" class="w-full bg-white/5 border-2 border-white/5 rounded-2xl py-5 px-6 font-black outline-none focus:border-primary transition-all text-2xl text-white">
                   <span class="absolute right-6 top-1/2 -translate-y-1/2 text-primary font-black text-2xl">$</span>
                 </div>
               </div>

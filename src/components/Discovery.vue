@@ -12,6 +12,9 @@
           <img 
             :src="place.image" 
             :alt="place.name" 
+            loading="lazy"
+            width="800"
+            height="1200"
             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 brightness-75"
           >
           <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/20 to-transparent"></div>
