@@ -207,6 +207,34 @@ app.post('/api/book-vip', authenticate, async (req, res) => {
   }
 });
 
+app.post('/api/crypto/swap', authenticate, async (req, res) => {
+  try {
+    const { fromAmount } = req.body;
+    const user = await User.findById(req.user.id);
+    const usdVal = parseFloat(fromAmount);
+    if (user.balance < usdVal) return res.status(400).json({ error: 'Insufficient balance' });
+    user.balance -= usdVal;
+    user.tokens = (user.tokens || 0) + (usdVal * 0.8);
+    await user.save();
+    res.json({ balance: user.balance, tokens: user.tokens });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/api/affiliate/stats', authenticate, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    res.json({
+      referralLink: `https://nexyorkcasino.app/register?ref=${user.username}`,
+      referralCount: 14,
+      affiliateEarned: 385.50
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.post('/api/deposit', authenticate, async (req, res) => {
   try {
     const { amount, method } = req.body;

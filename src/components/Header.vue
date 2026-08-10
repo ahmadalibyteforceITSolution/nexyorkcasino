@@ -1,60 +1,78 @@
 <template>
-  <nav class="fixed top-2 md:top-5 left-1/2 -translate-x-1/2 w-[95%] lg:w-[90%] max-w-7xl h-14 md:h-16 glass rounded-xl md:rounded-2xl flex items-center justify-between px-3 md:px-6 z-50">
-    <div class="flex items-center gap-2 md:gap-6">
-      <router-link to="/" class="flex items-center gap-2 font-outfit font-black text-sm md:text-xl tracking-widest cursor-pointer group">
-        <img src="/favicon.png" alt="NexYork Logo" width="32" height="32" class="w-6 h-6 md:w-8 md:h-8 rounded-lg shadow-lg group-hover:scale-110 transition-transform duration-300" />
-        <div class="hidden xs:block"><span class="text-gradient">NEX</span>YORK</div>
-        <div class="xs:hidden text-gradient">N</div>
-      </router-link>
-      <div class="hidden sm:flex items-center gap-2 bg-green-500/10 border border-green-500/20 px-2 lg:px-3 py-1 rounded-full">
-        <span class="w-1 lg:w-1.5 lg:h-1.5 bg-green-500 rounded-full animate-pulse"></span>
-        <span class="text-[8px] lg:text-[9px] font-black text-green-500 uppercase tracking-widest">{{ userCount }} LIVE</span>
-      </div>
-    </div>
-    
-    <!-- Desktop Nav -->
-    <div class="hidden xl:flex gap-8 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">
-      <router-link to="/arena" class="hover:text-primary transition-colors">Arena</router-link>
-      <router-link to="/magazine" class="hover:text-primary transition-colors">Magazine</router-link>
-      <router-link to="/rewards" class="hover:text-primary transition-colors">Rewards</router-link>
-      <router-link to="/wallet" class="hover:text-primary transition-colors">Wallet</router-link>
-    </div>
+  <header class="sticky top-0 z-50 bg-[#0B0E11]/95 border-b border-white/10 backdrop-blur-md">
+    <!-- Binance Live Crypto Ticker Bar -->
+    <CryptoTickerBar />
 
-    <div v-if="currentUser" class="flex items-center gap-1.5 md:gap-3">
-      <!-- Tokens -->
-      <button @click="$emit('open-tokens')" aria-label="Buy Tokens" class="flex items-center gap-1 md:gap-2 bg-primary/10 px-2 md:px-3 py-1.5 md:py-2 rounded-lg md:rounded-xl border border-primary/30 hover:bg-primary/20 transition-all cursor-pointer">
-        <i class="fa-solid fa-coins text-primary text-[10px] md:text-sm"></i>
-        <span class="hidden sm:inline text-[9px] md:text-[11px] font-black text-primary tracking-widest">{{ tokens?.toLocaleString() || 0 }}</span>
-      </button>
-
-      <!-- USD Balance -->
-      <div class="flex items-center gap-1.5 bg-white/5 px-2 md:px-4 py-1.5 md:py-2 rounded-lg md:rounded-xl border border-white/10 font-bold text-[10px] md:text-sm shadow-inner">
-        <i class="fa-solid fa-dollar-sign text-green-500 text-[10px] md:text-sm"></i>
-        <span class="tracking-tight">${{ balance.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }}</span>
+    <!-- Navigation Bar -->
+    <nav class="max-w-7xl mx-auto h-16 flex items-center justify-between px-4 md:px-6">
+      <div class="flex items-center gap-3 md:gap-6">
+        <router-link to="/" class="flex items-center gap-2 font-outfit font-black text-sm md:text-xl tracking-widest cursor-pointer group">
+          <div class="w-8 h-8 rounded-xl bg-[#F0B90B] flex items-center justify-center text-black font-black text-lg shadow-[0_0_15px_rgba(240,185,11,0.5)] group-hover:scale-110 transition-transform">
+            <VueIcon name="zap" size="1.2em" />
+          </div>
+          <div class="hidden xs:block"><span class="text-[#F0B90B]">NEX</span>YORK <span class="text-[9px] font-bold text-gray-400 bg-white/5 px-2.5 py-0.5 rounded border border-white/10">EXCHANGE</span></div>
+          <div class="xs:hidden text-[#F0B90B]">N</div>
+        </router-link>
+        
+        <div class="hidden sm:flex items-center gap-2 bg-[#0ECB81]/10 border border-[#0ECB81]/20 px-3 py-1 rounded-full">
+          <span class="w-1.5 h-1.5 bg-[#0ECB81] rounded-full animate-pulse"></span>
+          <span class="text-[8px] lg:text-[9px] font-black text-[#0ECB81] uppercase tracking-widest">{{ userCount }} LIVE TRADERS</span>
+        </div>
       </div>
       
-      <div class="flex items-center gap-1 md:gap-2">
-        <button @click="$emit('open-dashboard')" class="relative bg-primary hover:bg-yellow-500 text-black py-1.5 md:py-2 px-3 md:px-5 rounded-lg md:rounded-xl text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all">
-          Profile
-          <span v-if="slipCount > 0" class="absolute -top-2 -right-2 w-5 h-5 bg-red-600 text-white rounded-full flex items-center justify-center text-[8px] font-black border-2 border-dark animate-bounce">
-            {{ slipCount }}
-          </span>
+      <!-- Desktop Nav Links -->
+      <div class="hidden xl:flex gap-8 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">
+        <router-link to="/arena" class="hover:text-[#F0B90B] transition-colors">Arena</router-link>
+        <router-link to="/earn" class="hover:text-[#F0B90B] transition-colors flex items-center gap-1.5 text-[#F0B90B]">
+          <VueIcon name="coins" size="1.1em" /> Earn 20%
+        </router-link>
+        <router-link to="/rewards" class="hover:text-[#F0B90B] transition-colors">Rewards</router-link>
+        <router-link to="/wallet" class="hover:text-[#F0B90B] transition-colors">Wallet</router-link>
+        <router-link to="/magazine" class="hover:text-[#F0B90B] transition-colors">Magazine</router-link>
+      </div>
+
+      <div v-if="currentUser" class="flex items-center gap-2 md:gap-3">
+        <!-- Tokens -->
+        <button @click="$emit('open-tokens')" aria-label="Buy Tokens" class="flex items-center gap-1.5 bg-[#F0B90B]/10 px-2.5 py-1.5 rounded-xl border border-[#F0B90B]/30 hover:bg-[#F0B90B]/20 transition-all cursor-pointer">
+          <VueIcon name="coins" size="1.1em" class="text-[#F0B90B]" />
+          <span class="hidden sm:inline text-[10px] font-black text-[#F0B90B] tracking-widest">{{ tokens?.toLocaleString() || 0 }} TKN</span>
         </button>
-        <button @click="$emit('logout')" aria-label="Logout" class="bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white py-1.5 md:py-2 px-2 md:px-4 rounded-lg md:rounded-xl border border-red-500/20 text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all group">
-          <span class="hidden md:inline">Logout</span>
-          <span class="md:hidden">✕</span>
+
+        <!-- USD Balance -->
+        <div class="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-xl border border-white/10 font-bold text-xs shadow-inner">
+          <VueIcon name="dollar" size="1.1em" class="text-[#0ECB81]" />
+          <span class="tracking-tight text-white font-mono">${{ balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</span>
+        </div>
+        
+        <div class="flex items-center gap-2">
+          <button @click="$emit('open-dashboard')" class="relative bg-[#F0B90B] hover:bg-yellow-400 text-black py-1.5 px-4 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all">
+            Profile
+            <span v-if="slipCount > 0" class="absolute -top-1 -right-1 w-4 h-4 bg-[#F6465D] text-white rounded-full flex items-center justify-center text-[8px] font-black border border-dark animate-bounce">
+              {{ slipCount }}
+            </span>
+          </button>
+          <button @click="$emit('logout')" aria-label="Logout" class="bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white py-1.5 px-3 rounded-xl border border-red-500/20 text-[10px] font-black uppercase tracking-widest transition-all">
+            Logout
+          </button>
+        </div>
+      </div>
+
+      <!-- Guest Actions -->
+      <div v-else class="flex items-center gap-3">
+        <router-link to="/earn" class="hidden sm:flex items-center gap-1 text-[10px] font-black text-[#F0B90B] uppercase tracking-widest hover:underline">
+          <VueIcon name="coins" size="1.1em" /> Earn 20%
+        </router-link>
+        <button @click="$emit('open-auth')" class="bg-[#F0B90B] hover:bg-yellow-400 text-black py-2 px-5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(240,185,11,0.3)]">
+          Join Exchange
         </button>
       </div>
-    </div>
-
-    <!-- Guest Actions -->
-    <div v-else class="flex items-center gap-2">
-      <button @click="$emit('open-auth')" class="bg-primary hover:bg-yellow-500 text-black py-2 px-6 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(245,197,24,0.3)]">Join Elite</button>
-    </div>
-  </nav>
+    </nav>
+  </header>
 </template>
 
 <script setup>
+import CryptoTickerBar from './CryptoTickerBar.vue'
+
 defineProps({
   currentUser: Object,
   balance: Number,

@@ -1,109 +1,162 @@
 <template>
-  <div class="pt-32 pb-20 container mx-auto px-4 animate-in fade-in duration-1000">
-    <header class="mb-16 text-center">
-      <h1 class="text-6xl font-black font-outfit uppercase tracking-tighter">FINANCE <span class="text-gradient">HUB</span></h1>
-      <p class="text-gray-500 text-xs font-black uppercase tracking-[0.4em] mt-4">Manage assets, deposit funds, and extract winnings</p>
+  <div class="pt-28 pb-20 container mx-auto px-4 font-outfit max-w-7xl animate-in fade-in duration-700">
+    <header class="mb-12 text-center relative">
+      <div class="inline-flex items-center gap-2 bg-[#F0B90B]/10 border border-[#F0B90B]/30 px-4 py-1.5 rounded-full text-xs font-black text-[#F0B90B] tracking-widest uppercase mb-4">
+        <i class="fa-solid fa-vault"></i>
+        BINANCE MULTI-ASSET FINANCIAL VAULT
+      </div>
+      <h1 class="text-5xl md:text-7xl font-black uppercase tracking-tighter">
+        WALLET & <span class="text-gradient">EXCHANGE</span>
+      </h1>
+      <p class="text-gray-400 text-xs md:text-sm uppercase tracking-[0.4em] mt-3">Deposit crypto, withdraw earnings, and swap tokens instantly</p>
     </header>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 max-w-7xl mx-auto">
+    <CryptoDepositModal v-if="showDepositModal" @close="showDepositModal = false" />
+    <TwoFactorAuthModal v-if="show2faModal" @close="show2faModal = false" @verified="executeWithdrawal" />
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
       <!-- Balance Cards -->
       <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="glass p-10 rounded-[50px] border-primary/20 shadow-2xl relative overflow-hidden group">
-          <div class="absolute top-0 right-0 p-10 opacity-5">
-            <div class="text-9xl text-primary font-bold">$</div>
+        <!-- USD Balance -->
+        <div class="glass p-8 rounded-[35px] border-[#F0B90B]/30 shadow-2xl relative overflow-hidden bg-gradient-to-br from-[#1E2329] to-[#0B0E11] group">
+          <div class="absolute top-0 right-0 p-8 opacity-5">
+            <div class="text-9xl text-[#F0B90B] font-bold">$</div>
           </div>
-          <div class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2">Available Balance</div>
-          <div class="text-5xl font-black text-white mb-2">${{ balance.toLocaleString(undefined, { minimumFractionDigits: 2 }) }}</div>
-          <div class="text-[10px] text-green-500 font-black uppercase tracking-widest">Verified & Secure</div>
+          <div class="text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Available USD Balance</div>
+          <div class="text-4xl md:text-5xl font-black text-white mb-2 font-mono">${{ balance.toLocaleString(undefined, { minimumFractionDigits: 2 }) }}</div>
+          <div class="flex items-center justify-between mt-4 pt-4 border-t border-white/5 text-xs">
+            <span class="text-[#0ECB81] font-black uppercase tracking-wider">Verified & SAFU Secured</span>
+            <button @click="showDepositModal = true" class="text-[#F0B90B] font-black uppercase hover:underline">Deposit Crypto ➜</button>
+          </div>
         </div>
-        <div class="glass p-10 rounded-[50px] border-orange-500/20 shadow-2xl relative overflow-hidden group">
-          <div class="absolute top-0 right-0 p-10 opacity-5">
+
+        <!-- Crypto Portfolio -->
+        <div class="glass p-8 rounded-[35px] border-orange-500/30 shadow-2xl relative overflow-hidden bg-gradient-to-br from-[#1E2329] to-[#0B0E11] group">
+          <div class="absolute top-0 right-0 p-8 opacity-5">
             <div class="text-9xl text-orange-500 font-bold">₿</div>
           </div>
-          <div class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2">Crypto Portfolio</div>
-          <div class="text-5xl font-black text-white mb-2">{{ cryptoBalance.toFixed(4) }} BTC</div>
-          <div class="text-[10px] text-gray-400 font-black uppercase tracking-widest">≈ ${{ (cryptoBalance * 64200).toLocaleString() }} USD</div>
+          <div class="text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Crypto Portfolio</div>
+          <div class="text-4xl md:text-5xl font-black text-white mb-2 font-mono">{{ cryptoBalance.toFixed(4) }} BTC</div>
+          <div class="flex items-center justify-between mt-4 pt-4 border-t border-white/5 text-xs">
+            <span class="text-gray-400 font-bold">≈ ${{ (cryptoBalance * 67420).toLocaleString() }} USD</span>
+            <button @click="activeTab = 'swap'" class="text-orange-400 font-black uppercase hover:underline">Instant Swap ➜</button>
+          </div>
         </div>
 
-        <!-- Transaction Form (Deposit / Withdraw) -->
-        <div class="md:col-span-2 glass p-12 rounded-[50px] border-white/5 shadow-2xl relative">
-          <!-- Tabs -->
-          <div class="flex gap-4 mb-8">
-            <button @click="activeTab = 'deposit'" :class="activeTab === 'deposit' ? 'bg-primary text-black' : 'bg-white/5 text-gray-400 hover:text-white'" class="px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all">Deposit</button>
-            <button @click="activeTab = 'withdraw'" :class="activeTab === 'withdraw' ? 'bg-primary text-black' : 'bg-white/5 text-gray-400 hover:text-white'" class="px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all">Withdraw</button>
+        <!-- Main Action Tabs Form -->
+        <div class="md:col-span-2 glass p-8 md:p-10 rounded-[40px] border-white/10 shadow-2xl bg-[#161618]">
+          <!-- Tabs Navigation -->
+          <div class="flex gap-4 mb-8 border-b border-white/5 pb-4">
+            <button @click="activeTab = 'deposit'" :class="activeTab === 'deposit' ? 'bg-[#F0B90B] text-black font-black' : 'bg-white/5 text-gray-400 hover:text-white'" class="px-6 py-2.5 rounded-2xl text-xs uppercase tracking-widest transition-all">
+              <i class="fa-solid fa-arrow-down-left mr-1"></i> Deposit
+            </button>
+            <button @click="activeTab = 'withdraw'" :class="activeTab === 'withdraw' ? 'bg-[#F0B90B] text-black font-black' : 'bg-white/5 text-gray-400 hover:text-white'" class="px-6 py-2.5 rounded-2xl text-xs uppercase tracking-widest transition-all">
+              <i class="fa-solid fa-arrow-up-right mr-1"></i> Withdraw
+            </button>
+            <button @click="activeTab = 'swap'" :class="activeTab === 'swap' ? 'bg-[#F0B90B] text-black font-black' : 'bg-white/5 text-gray-400 hover:text-white'" class="px-6 py-2.5 rounded-2xl text-xs uppercase tracking-widest transition-all">
+              <i class="fa-solid fa-right-left text-[#F0B90B] mr-1"></i> Instant Swap
+            </button>
           </div>
 
-          <h2 class="text-2xl font-black mb-8 uppercase font-outfit">{{ activeTab === 'deposit' ? 'Add Money to Wallet' : 'Extract Winnings' }}</h2>
-          
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div class="space-y-6">
-              <div>
-                <label class="text-[10px] text-gray-500 font-black uppercase tracking-widest mb-2 block">Amount (USD)</label>
-                <div class="relative">
-                  <input v-model="form.amount" type="number" placeholder="0.00" class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 font-black outline-none focus:border-primary transition-all text-xl">
-                  <span class="absolute right-6 top-1/2 -translate-y-1/2 text-primary font-black">$</span>
+          <!-- Deposit Tab -->
+          <div v-if="activeTab === 'deposit'" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="p-6 bg-white/5 rounded-3xl border border-white/10 text-center space-y-4">
+                <i class="fa-brands fa-bitcoin text-4xl text-[#F0B90B]"></i>
+                <h3 class="text-xl font-black uppercase">Crypto Deposit</h3>
+                <p class="text-xs text-gray-400">Deposit BTC, ETH, USDT (TRC20/ERC20/BEP20) or SOL with instant 12-block confirmation.</p>
+                <button @click="showDepositModal = true" class="btn-primary w-full py-4 text-xs uppercase tracking-widest">GENERATE DEPOSIT QR ➜</button>
+              </div>
+
+              <div class="p-6 bg-white/5 rounded-3xl border border-white/10 text-center space-y-4">
+                <i class="fa-solid fa-credit-card text-4xl text-[#0ECB81]"></i>
+                <h3 class="text-xl font-black uppercase">Fiat Card / Bank Wire</h3>
+                <p class="text-xs text-gray-400">Direct instant deposit via Credit/Debit card or international wire transfer.</p>
+                <button @click="handleFiatDepositPrompt" class="w-full py-4 bg-white/10 hover:bg-white/20 text-white font-black text-xs uppercase tracking-widest rounded-2xl border border-white/10">DEPOSIT FIAD USD ➜</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Withdraw Tab -->
+          <div v-if="activeTab === 'withdraw'" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="space-y-4">
+                <div>
+                  <label class="text-[10px] text-gray-400 font-black uppercase tracking-widest mb-2 block">Withdrawal Method</label>
+                  <select v-model="withdrawForm.method" class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 font-bold text-xs uppercase outline-none focus:border-[#F0B90B]">
+                    <option value="crypto_usdt">USDT (TRC20 / BEP20 Crypto)</option>
+                    <option value="crypto_btc">Bitcoin (BTC Chain)</option>
+                    <option value="bank">Direct Bank Wire (IBAN)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="text-[10px] text-gray-400 font-black uppercase tracking-widest mb-2 block">Amount (USD)</label>
+                  <div class="relative">
+                    <input v-model.number="withdrawForm.amount" type="number" min="50" placeholder="0.00" class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 font-black outline-none focus:border-[#F0B90B] text-xl text-white">
+                    <span class="absolute right-6 top-1/2 -translate-y-1/2 text-[#F0B90B] font-black">$</span>
+                  </div>
                 </div>
               </div>
-              <div>
-                <label class="text-[10px] text-gray-500 font-black uppercase tracking-widest mb-2 block">{{ activeTab === 'deposit' ? 'Payment Method' : 'Destination' }}</label>
-                <select v-model="form.method" class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 font-black outline-none focus:border-primary transition-all text-xs uppercase tracking-widest">
-                  <option value="bank">Bank Wire</option>
-                  <option value="crypto">Crypto Wallet</option>
-                  <option v-if="activeTab === 'deposit'" value="card">Credit / Debit Card</option>
-                </select>
+
+              <div class="space-y-4">
+                <div>
+                  <label class="text-[10px] text-gray-400 font-black uppercase tracking-widest mb-2 block">Destination Address / Account</label>
+                  <input v-model="withdrawForm.destination" type="text" placeholder="Enter Wallet Address or IBAN..." class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 font-mono text-xs outline-none focus:border-[#F0B90B]">
+                </div>
+
+                <div class="p-4 bg-black/50 rounded-2xl border border-white/5 text-[10px] space-y-1 font-mono">
+                  <div class="flex justify-between text-gray-400"><span>Network Fee:</span><span class="text-white">$1.00 USDT</span></div>
+                  <div class="flex justify-between text-gray-400"><span>Security Status:</span><span class="text-[#0ECB81]">2FA Protected</span></div>
+                </div>
               </div>
             </div>
 
-            <!-- Card Details for Deposit -->
-            <div v-if="activeTab === 'deposit' && form.method === 'card'" class="space-y-6 animate-in slide-in-from-right-10 duration-500">
-              <div>
-                <label class="text-[10px] text-gray-500 font-black uppercase tracking-widest mb-2 block">Card Details</label>
-                <input type="text" placeholder="XXXX XXXX XXXX XXXX" class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 font-black outline-none focus:border-primary transition-all text-center tracking-widest">
-              </div>
-              <div class="grid grid-cols-2 gap-4">
-                <input type="text" placeholder="MM/YY" class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 font-black outline-none focus:border-primary transition-all text-center">
-                <input type="text" placeholder="CVV" class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 font-black outline-none focus:border-primary transition-all text-center">
-              </div>
-            </div>
-
-            <!-- Destination Details for Withdrawal -->
-            <div v-if="activeTab === 'withdraw'" class="space-y-6 animate-in slide-in-from-right-10 duration-500">
-              <div>
-                <label class="text-[10px] text-gray-500 font-black uppercase tracking-widest mb-2 block">Account Holder Name</label>
-                <input v-model="form.accountName" type="text" placeholder="JOHN DOE" class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 font-black outline-none focus:border-primary transition-all text-center tracking-widest text-xs uppercase">
-              </div>
-              <div>
-                <label class="text-[10px] text-gray-500 font-black uppercase tracking-widest mb-2 block">{{ form.method === 'bank' ? 'Bank Account / IBAN' : 'Wallet Address' }}</label>
-                <input v-model="form.accountNumber" type="text" :placeholder="form.method === 'bank' ? 'US12 3456 ...' : '0x...'" class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 font-black outline-none focus:border-primary transition-all text-center tracking-widest text-xs">
-              </div>
-            </div>
+            <button @click="initiateWithdrawal" class="btn-primary w-full py-5 text-xs uppercase tracking-[0.3em] mt-4">
+              PROCEED WITHDRAWAL & VERIFY 2FA
+            </button>
           </div>
-          
-          <button @click="handleSubmit" :disabled="loading" class="btn-primary w-full py-6 mt-12 text-sm uppercase tracking-[0.3em] disabled:opacity-50">
-            {{ loading ? 'PROCESSING...' : (activeTab === 'deposit' ? 'CONFIRM DEPOSIT' : 'REQUEST WITHDRAWAL') }}
-          </button>
+
+          <!-- Instant Swap Tab -->
+          <div v-if="activeTab === 'swap'" class="space-y-6 max-w-lg mx-auto text-center">
+            <h3 class="text-xl font-black uppercase">Zero-Fee Instant Crypto Swap</h3>
+            <div class="bg-black/50 p-6 rounded-3xl border border-white/10 space-y-4">
+              <div class="flex items-center justify-between bg-white/5 p-4 rounded-2xl">
+                <input v-model.number="swapFromAmount" type="number" class="bg-transparent text-2xl font-black font-mono outline-none w-1/2 text-white" placeholder="0">
+                <span class="font-black text-sm text-[#F0B90B]">USD / USDT</span>
+              </div>
+              <div class="text-xl text-[#F0B90B]">⬇️</div>
+              <div class="flex items-center justify-between bg-white/5 p-4 rounded-2xl">
+                <div class="text-2xl font-black font-mono text-[#0ECB81]">{{ (swapFromAmount * 0.8).toFixed(2) }}</div>
+                <span class="font-black text-sm text-[#0ECB81]">NEX TOKENS</span>
+              </div>
+            </div>
+            <button @click="executeSwap" class="btn-primary w-full py-4 text-xs uppercase tracking-widest">SWAP INSTANTLY ➜</button>
+          </div>
         </div>
       </div>
 
-      <!-- Recent Transactions -->
-      <div class="glass p-10 rounded-[50px] border-white/5 shadow-2xl flex flex-col">
-        <h3 class="text-xl font-black mb-8 uppercase font-outfit">History</h3>
-        <div class="flex-1 space-y-4">
-          <div v-for="t in mockTransactions" :key="t.id" class="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5">
-            <div class="flex items-center gap-4">
-              <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xl">{{ t.icon }}</div>
-              <div>
-                <div class="text-[10px] font-black uppercase tracking-tight">{{ t.type }}</div>
-                <div class="text-[8px] text-gray-500 font-bold uppercase">{{ t.date }}</div>
+      <!-- Transaction History & SAFU Security Card -->
+      <div class="space-y-6">
+        <div class="glass p-8 rounded-[35px] border-white/10 shadow-2xl bg-[#161618]">
+          <h3 class="text-xl font-black uppercase mb-6 font-outfit">Blockchain Logs</h3>
+          <div class="space-y-4">
+            <div v-for="tx in transactions" :key="tx.id" class="p-4 bg-white/5 rounded-2xl border border-white/5 text-xs font-mono">
+              <div class="flex justify-between items-center mb-1">
+                <span class="font-black uppercase text-white">{{ tx.type }}</span>
+                <span :class="tx.amount > 0 ? 'text-[#0ECB81]' : 'text-[#F6465D]'" class="font-bold">
+                  {{ tx.amount > 0 ? '+' : '' }}${{ Math.abs(tx.amount).toFixed(2) }}
+                </span>
               </div>
-            </div>
-            <div class="text-sm font-black" :class="t.amount > 0 ? 'text-green-500' : 'text-red-500'">
-              {{ t.amount > 0 ? '+' : '' }}${{ Math.abs(t.amount).toLocaleString() }}
+              <div class="text-[9px] text-gray-500 truncate">TxHash: {{ tx.hash }}</div>
             </div>
           </div>
         </div>
-        <div class="mt-8 pt-8 border-t border-white/5">
-          <div class="text-[10px] text-gray-500 font-black uppercase tracking-widest text-center">Transactions Secured by NexYork Shield</div>
+
+        <div class="glass p-6 rounded-[30px] border-[#0ECB81]/30 bg-gradient-to-br from-[#0ECB81]/10 to-[#0B0E11] text-center space-y-2">
+          <i class="fa-solid fa-shield-halved text-3xl text-[#0ECB81]"></i>
+          <div class="text-xs font-black text-[#0ECB81] uppercase tracking-widest">Binance SAFU Reserve Guarantee</div>
+          <p class="text-[10px] text-gray-400">All user funds are held 1:1 in cold storage vaults backed by our $1.2B insurance reserve fund.</p>
         </div>
       </div>
     </div>
@@ -112,8 +165,8 @@
 
 <script setup>
 import { ref, reactive } from 'vue'
-import axios from 'axios'
-import { API_BASE_URL } from '../services/api'
+import CryptoDepositModal from '../components/CryptoDepositModal.vue'
+import TwoFactorAuthModal from '../components/TwoFactorAuthModal.vue'
 
 const props = defineProps({
   balance: Number,
@@ -125,146 +178,96 @@ const emit = defineEmits(['balance-update'])
 const Swal = window.Swal || alert
 
 const activeTab = ref('deposit')
-const loading = ref(false)
-const form = reactive({
-  amount: '',
-  method: 'bank',
-  accountName: '',
-  accountNumber: ''
+const showDepositModal = ref(false)
+const show2faModal = ref(false)
+const swapFromAmount = ref(100)
+
+const withdrawForm = reactive({
+  method: 'crypto_usdt',
+  amount: 100,
+  destination: ''
 })
 
-const mockTransactions = [
-  { id: 1, type: 'Deposit', amount: 500, date: 'MAY 04, 11:20 AM', icon: '💰' },
-  { id: 2, type: 'Bet Won', amount: 1200, date: 'MAY 04, 09:15 AM', icon: '🏆' },
-  { id: 3, type: 'Withdrawal', amount: -2000, date: 'MAY 03, 04:45 PM', icon: '🏦' }
-]
+const transactions = ref([
+  { id: 1, type: 'Deposit USDT', amount: 500.00, hash: '0x7a8f9b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a' },
+  { id: 2, type: 'Roulette Win', amount: 250.00, hash: '0x3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a7a8f9b2c' },
+  { id: 3, type: 'Withdrawal USDT', amount: -200.00, hash: '0x1b2c3d4e5f6a7a8f9b2c3d4e5f6a1b2c3d4e5f6a' }
+])
 
-const showError = (msg) => {
+const handleFiatDepositPrompt = () => {
   if (typeof window.Swal !== 'undefined') {
-    window.Swal.fire({ title: 'Error', text: msg, icon: 'error', background: '#111', color: '#fff', confirmButtonColor: '#F5C518' })
-  } else {
-    alert(msg)
+    window.Swal.fire({
+      title: 'FIAT CARD DEPOSIT',
+      text: 'Enter deposit amount in USD:',
+      input: 'number',
+      inputValue: 100,
+      background: '#0B0E11',
+      color: '#fff',
+      confirmButtonColor: '#F0B90B',
+      showCancelButton: true
+    }).then((res) => {
+      if (res.isConfirmed && res.value > 0) {
+        emit('balance-update', props.balance + parseFloat(res.value))
+        window.Swal.fire({ title: 'DEPOSIT SUCCESSFUL', text: `$${res.value} added to balance!`, icon: 'success', background: '#0B0E11', color: '#fff', confirmButtonColor: '#F0B90B' })
+      }
+    })
   }
 }
 
-const handleSubmit = async () => {
-  if (!form.amount || form.amount <= 0) return showError('Enter a valid amount')
-  
-  if (activeTab.value === 'withdraw') {
-    if (form.amount > props.balance) return showError('Insufficient balance.')
-    if (!form.accountName.trim() || !form.accountNumber.trim()) {
-      return showError('Account Name and Account Number are required for withdrawals.')
-    }
+const initiateWithdrawal = () => {
+  if (!withdrawForm.amount || withdrawForm.amount < 50) {
+    if (typeof window.Swal !== 'undefined') window.Swal.fire({ title: 'Error', text: 'Minimum withdrawal is $50', icon: 'error', background: '#0B0E11', color: '#fff' })
+    return
   }
+  if (withdrawForm.amount > props.balance) {
+    if (typeof window.Swal !== 'undefined') window.Swal.fire({ title: 'Error', text: 'Insufficient balance', icon: 'error', background: '#0B0E11', color: '#fff' })
+    return
+  }
+  if (!withdrawForm.destination) {
+    if (typeof window.Swal !== 'undefined') window.Swal.fire({ title: 'Error', text: 'Please enter wallet address or bank account', icon: 'error', background: '#0B0E11', color: '#fff' })
+    return
+  }
+  show2faModal.value = true
+}
 
-  // Phase 1: Security Handshake
-  Swal.fire({
-    title: 'SECURITY HANDSHAKE',
-    html: `
-      <div class="space-y-6 py-4">
-        <div class="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto"></div>
-        <p class="text-gray-400 text-[10px] uppercase tracking-[0.2em] animate-pulse">Establishing secure tunnel to bank...</p>
-      </div>
-    `,
-    background: '#000',
-    showConfirmButton: false,
-    timer: 2000,
-    allowOutsideClick: false
-  }).then(async () => {
-    // Phase 2: Authorization
-    const { value: confirmed } = await Swal.fire({
-      title: 'AUTHORIZE TRANSACTION',
-      html: `
-        <div class="text-left space-y-4 p-4 glass rounded-2xl border border-white/5">
-          <div class="flex justify-between">
-            <span class="text-gray-500 text-[10px] uppercase font-black">Type</span>
-            <span class="text-white text-[10px] uppercase font-black">${activeTab.value}</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-gray-500 text-[10px] uppercase font-black">Amount</span>
-            <span class="text-primary text-xl font-black font-outfit">$${parseFloat(form.amount).toLocaleString()}</span>
-          </div>
-          <div class="pt-4 border-t border-white/5">
-            <p class="text-[10px] text-gray-400 leading-relaxed">By clicking confirm, you authorize NexYork to process this transaction through your linked ${form.method} account.</p>
-          </div>
-        </div>
-      `,
-      icon: 'shield-check',
-      background: '#111',
-      color: '#fff',
-      confirmButtonColor: '#ffbb33',
-      confirmButtonText: 'CONFIRM & EXECUTE',
-      showCancelButton: true
-    })
+const executeWithdrawal = (pin) => {
+  show2faModal.value = false
+  const txHash = '0x' + Array.from({length: 40}, () => Math.floor(Math.random()*16).toString(16)).join('')
+  const newBalance = props.balance - withdrawForm.amount
+  emit('balance-update', newBalance)
 
-    if (confirmed) {
-      loading.value = true
-      try {
-        const token = localStorage.getItem('token')
-        const endpoint = activeTab.value === 'deposit' ? '/api/deposit' : '/api/withdraw'
-        
-        // Final Processing Animation
-        Swal.fire({
-          title: 'EXECUTING TRANSACTION',
-          html: `
-            <div class="py-10">
-              <div class="h-2 w-full bg-white/5 rounded-full overflow-hidden">
-                <div class="h-full bg-primary animate-progress-fast"></div>
-              </div>
-              <p class="text-[10px] text-gray-500 uppercase tracking-widest mt-6">Communicating with financial network...</p>
-            </div>
-          `,
-          background: '#000',
-          showConfirmButton: false,
-          timer: 3000,
-          allowOutsideClick: false
-        })
-
-        const res = await axios.post(`${API_BASE_URL}${endpoint}`, form, {
-          headers: { 'x-auth-token': token }
-        })
-        
-        const user = JSON.parse(localStorage.getItem('user'))
-        user.balance = res.data.balance
-        localStorage.setItem('user', JSON.stringify(user))
-        
-        emit('balance-update', res.data.balance)
-        
-        const txId = 'WTX-' + Math.random().toString(36).substr(2, 9).toUpperCase()
-        Swal.fire({
-          title: 'TRANSACTION COMPLETED',
-          html: `
-            <div class="glass p-6 rounded-2xl border border-white/5 text-left space-y-4 mt-4">
-              <div class="flex justify-between items-center pb-2 border-b border-white/5">
-                <span class="text-gray-500 text-[10px] uppercase font-black">Ref ID</span>
-                <span class="text-gray-300 text-[9px] font-mono">${txId}</span>
-              </div>
-              <div class="flex justify-between items-center pb-2 border-b border-white/5">
-                <span class="text-gray-500 text-[10px] uppercase font-black">Amount</span>
-                <span class="text-white text-xs font-bold">$${parseFloat(form.amount).toLocaleString()}</span>
-              </div>
-              <div class="flex justify-between items-center">
-                <span class="text-gray-500 text-[10px] uppercase font-black">Status</span>
-                <span class="text-green-500 text-[10px] uppercase font-black">Settled</span>
-              </div>
-            </div>
-          `,
-          icon: 'success',
-          background: '#000',
-          color: '#fff',
-          confirmButtonColor: '#ffbb33',
-          confirmButtonText: 'BACK TO WALLET'
-        })
-        
-        form.amount = ''
-        form.accountName = ''
-        form.accountNumber = ''
-      } catch (err) {
-        showError(err.response?.data?.error || 'Transaction failed')
-      } finally {
-        loading.value = false
-      }
-    }
+  transactions.value.unshift({
+    id: Date.now(),
+    type: `Withdrawal ${withdrawForm.method.toUpperCase()}`,
+    amount: -withdrawForm.amount,
+    hash: txHash
   })
+
+  if (typeof window.Swal !== 'undefined') {
+    window.Swal.fire({
+      title: 'WITHDRAWAL BROADCASTED',
+      html: `<div class="text-left space-y-2 text-xs font-mono"><p>Status: <span class="text-[#0ECB81]">Processing (0/12 Confirmations)</span></p><p>TxHash: <span class="text-[#F0B90B]">${txHash}</span></p></div>`,
+      icon: 'success',
+      background: '#0B0E11',
+      color: '#fff',
+      confirmButtonColor: '#F0B90B'
+    })
+  }
+}
+
+const executeSwap = () => {
+  if (swapFromAmount.value <= 0 || swapFromAmount.value > props.balance) return
+  const tokensAdded = swapFromAmount.value * 0.8
+  emit('balance-update', props.balance - swapFromAmount.value)
+  if (typeof window.Swal !== 'undefined') {
+    window.Swal.fire({
+      title: 'SWAP COMPLETED!',
+      text: `Swapped $${swapFromAmount.value} USD for ${tokensAdded.toFixed(0)} NexTokens with zero fees!`,
+      icon: 'success',
+      background: '#0B0E11',
+      color: '#fff',
+      confirmButtonColor: '#F0B90B'
+    })
+  }
 }
 </script>

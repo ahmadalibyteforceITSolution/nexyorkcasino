@@ -77,17 +77,17 @@ const getSportIcon = (emoji) => {
     '🏀': 'fa-solid fa-basketball text-orange-500',
     '⚽': 'fa-solid fa-futbol text-white',
     '⚾': 'fa-solid fa-baseball text-white',
-    '🏏': 'fa-solid fa-cricket-bat-ball text-yellow-600',
+    '🏏': 'fa-solid fa-baseball-bat-ball text-yellow-600',
     '🏒': 'fa-solid fa-hockey-puck text-blue-400',
     '🎮': 'fa-solid fa-gamepad text-purple-500',
     '🏎️': 'fa-solid fa-car-side text-red-500',
     '🥊': 'fa-solid fa-hand-fist text-red-600',
-    '🏈': 'fa-solid fa-football text-brown-600',
-    '🎾': 'fa-solid fa-baseball-ball text-lime-400',
+    '🏈': 'fa-solid fa-football text-amber-700',
+    '🎾': 'fa-solid fa-[#0ECB81] text-lime-400',
     '🏉': 'fa-solid fa-football text-orange-800',
-    '🃏': 'fa-solid fa-cards text-red-500'
+    '🃏': 'fa-solid fa-clover text-red-500'
   }
-  return map[emoji] || 'fa-solid fa-star text-primary'
+  return map[emoji] || 'fa-solid fa-star text-[#F0B90B]'
 }
 
 const getBorderColor = (match) => {

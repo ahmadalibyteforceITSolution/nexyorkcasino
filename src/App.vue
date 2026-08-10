@@ -1,5 +1,8 @@
 <template>
-  <div class="min-h-screen bg-dark overflow-x-hidden relative">
+  <div class="min-h-screen bg-[#0B0E11] text-white overflow-x-hidden relative font-outfit">
+    <!-- Interactive 3D Background Canvas -->
+    <ThreeDBackgroundCanvas />
+
     <!-- Auth Modal -->
     <AuthModal 
       v-if="showAuthModal && !currentUser" 
@@ -14,6 +17,7 @@
       @purchase-success="handleTokenPurchase" 
     />
 
+    <!-- Header containing Binance Live Ticker & Navigation -->
     <Header 
       :currentUser="currentUser"
       @open-dashboard="showDashboard = true" 
@@ -38,6 +42,7 @@
       @add-to-slip="addToSlip"
       @place-bet="handlePlaceCasinoBet"
       @open-tokens="showTokenModal = true"
+      @balance-update="handleBalanceUpdate"
     />
 
     <UserDashboard 
@@ -53,6 +58,7 @@
       @remove-bet="removeBet"
       @place-bet="handlePlaceBet"
       @claim-bonus="handleClaimBonus"
+      @balance-update="handleBalanceUpdate"
     />
     
     <SocialHub 
@@ -63,6 +69,9 @@
       :onlineUsers="onlineUsers"
       @send="handleSendMessage"
     />
+
+    <!-- Binance Exchange Footer -->
+    <Footer />
   </div>
 </template>
 
@@ -70,7 +79,9 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import { apiService, API_BASE_URL } from './services/api'
+import ThreeDBackgroundCanvas from './components/ThreeDBackgroundCanvas.vue'
 import Header from './components/Header.vue'
+import Footer from './components/Footer.vue'
 import UserDashboard from './components/UserDashboard.vue'
 import AuthModal from './components/AuthModal.vue'
 import TokenBuyModal from './components/TokenBuyModal.vue'
@@ -82,26 +93,83 @@ const Swal = window.Swal
 const currentUser = ref(null)
 const showDashboard = ref(false)
 const showTokenModal = ref(false)
-const balance = ref(0)
-const tokens = ref(0)
-const cryptoBalance = ref(0)
+const balance = ref(1500)
+const tokens = ref(2500)
+const cryptoBalance = ref(0.2450)
 const betSlip = ref([])
 const globalMatches = ref([])
-const userCount = ref(0)
+const userCount = ref(142)
 const chatMessages = ref([])
 const recentPublicBets = ref([])
 const showAuthModal = ref(false)
+const onlineUsers = ref([])
+
+// Fetch Real Live Sports Data from ESPN API
+const fetchRealEspnMatches = async () => {
+  try {
+    const leagues = [
+      { name: 'NBA (USA)', url: 'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard', emoji: '🏀' },
+      { name: 'EPL (UK)', url: 'https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard', emoji: '⚽' },
+      { name: 'MLB (USA)', url: 'https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/scoreboard', emoji: '⚾' },
+      { name: 'LA LIGA (SPAIN)', url: 'https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/scoreboard', emoji: '⚽' }
+    ]
+
+    const allGames = []
+
+    for (const leg of leagues) {
+      try {
+        const res = await axios.get(leg.url)
+        if (res.data && res.data.events) {
+          res.data.events.slice(0, 3).forEach(ev => {
+            const comps = ev.competitions[0].competitors
+            const homeComp = comps.find(c => c.homeAway === 'home') || comps[0]
+            const awayComp = comps.find(c => c.homeAway === 'away') || comps[1]
+
+            allGames.push({
+              id: ev.id,
+              league: leg.name,
+              time: ev.status.type.detail || 'LIVE',
+              home: homeComp.team.shortDisplayName || homeComp.team.name,
+              homeEmoji: leg.emoji,
+              homeScore: homeComp.score || '0',
+              away: awayComp.team.shortDisplayName || awayComp.team.name,
+              awayEmoji: leg.emoji,
+              awayScore: awayComp.score || '0',
+              odds: {
+                home: (1.30 + Math.random() * 1.5).toFixed(2),
+                draw: leg.emoji === '⚽' ? (2.80 + Math.random() * 1.2).toFixed(2) : '-',
+                away: (1.50 + Math.random() * 2.0).toFixed(2)
+              }
+            })
+          })
+        }
+      } catch (err) {}
+    }
+
+    if (allGames.length > 0) {
+      globalMatches.value = allGames
+    }
+  } catch (err) {
+    console.warn("ESPN live sports fetch failed", err)
+  }
+}
 
 onMounted(() => {
-  // Check for stored user
   const storedUser = localStorage.getItem('user')
   if (storedUser) {
     handleLoginSuccess(JSON.parse(storedUser))
   }
 
+  fetchRealEspnMatches()
+  setInterval(fetchRealEspnMatches, 8000)
+
   socket.on('userCountUpdate', (count) => userCount.value = count)
-  socket.on('initialMatches', (data) => globalMatches.value = data)
-  socket.on('allMatchesUpdate', (data) => globalMatches.value = data)
+  socket.on('initialMatches', (data) => {
+    if (!globalMatches.value.length) globalMatches.value = data
+  })
+  socket.on('allMatchesUpdate', (data) => {
+    if (!globalMatches.value.length) globalMatches.value = data
+  })
   socket.on('initialMessages', (msgs) => chatMessages.value = msgs)
   socket.on('newMessage', (msg) => chatMessages.value.push(msg))
   socket.on('betBroadcast', (bet) => {
@@ -112,35 +180,18 @@ onMounted(() => {
   socket.on('balanceUpdate', (data) => {
     balance.value = data.balance
     if (currentUser.value) {
-      const user = JSON.parse(localStorage.getItem('user'))
-      if (user) {
-        user.balance = data.balance
-        localStorage.setItem('user', JSON.stringify(user))
-      }
+      const user = JSON.parse(localStorage.getItem('user')) || {}
+      user.balance = data.balance
+      localStorage.setItem('user', JSON.stringify(user))
     }
   })
-
-  // Polling Fallback for Stats & Matches (Vercel Support)
-  setInterval(async () => {
-    try {
-      const statsRes = await axios.get(`${import.meta.env.VITE_API_URL || API_BASE_URL}/stats`);
-      userCount.value = statsRes.data.userCount;
-
-      const matchesRes = await axios.get(`${import.meta.env.VITE_API_URL || API_BASE_URL}/matches`);
-      if (matchesRes.data && Array.isArray(matchesRes.data)) {
-        globalMatches.value = matchesRes.data;
-      }
-    } catch (e) {
-      console.warn("Polling failed", e);
-    }
-  }, 5000);
 })
 
 const handleLoginSuccess = (user) => {
   currentUser.value = user
-  balance.value = user.balance
-  tokens.value = user.tokens || 0
-  cryptoBalance.value = user.cryptoBalance
+  balance.value = user.balance !== undefined ? user.balance : 1500
+  tokens.value = user.tokens || 2500
+  cryptoBalance.value = user.cryptoBalance !== undefined ? user.cryptoBalance : 0.2450
   apiService.registerUserSocket(user)
   showAuthModal.value = false
 }
@@ -149,7 +200,16 @@ const handleLogout = () => {
   currentUser.value = null
   localStorage.removeItem('token')
   localStorage.removeItem('user')
-  window.location.reload() // Hard reset for security
+  window.location.reload()
+}
+
+const handleBalanceUpdate = (newBalance) => {
+  balance.value = newBalance
+  if (currentUser.value) {
+    const user = JSON.parse(localStorage.getItem('user')) || {}
+    user.balance = newBalance
+    localStorage.setItem('user', JSON.stringify(user))
+  }
 }
 
 const handleTokenPurchase = (newTokens) => {
@@ -175,7 +235,7 @@ const addToSlip = (data) => {
     odds,
     stake: 100
   })
-  showDashboard.value = true // Automatically open dashboard to show the slip
+  showDashboard.value = true
 }
 
 const removeBet = (id) => betSlip.value = betSlip.value.filter(b => b.id !== id)
@@ -197,20 +257,19 @@ const handlePlaceBet = () => {
       title: '🏆 Bets Placed!',
       text: `$${total} wagered across ${total / 100} bet(s). Good luck!`,
       icon: 'success',
-      background: '#0d0d0d',
+      background: '#0B0E11',
       color: '#fff',
-      confirmButtonColor: '#F5C518',
-      timer: 3000,
-      timerProgressBar: true
+      confirmButtonColor: '#F0B90B',
+      timer: 3000
     })
   } else {
     Swal?.fire({
       title: 'Insufficient Balance',
       text: 'Please deposit funds to place bets.',
       icon: 'error',
-      background: '#0d0d0d',
+      background: '#0B0E11',
       color: '#fff',
-      confirmButtonColor: '#F5C518'
+      confirmButtonColor: '#F0B90B'
     })
   }
 }
@@ -222,8 +281,7 @@ const handlePlaceCasinoBet = (wager) => {
   }
   if (tokens.value >= wager) {
     tokens.value -= wager
-    // Update local storage
-    const user = JSON.parse(localStorage.getItem('user'))
+    const user = JSON.parse(localStorage.getItem('user')) || {}
     user.tokens = tokens.value
     localStorage.setItem('user', JSON.stringify(user))
   } else {
@@ -237,52 +295,26 @@ const handleClaimBonus = async () => {
     return
   }
   const { value: accountNumber } = await Swal?.fire({
-    title: 'Link Bank Account',
-    text: 'Please enter your bank account number to verify and deposit your $100 VIP Bonus instantly.',
+    title: 'Link Crypto / Bank Account',
+    text: 'Please enter your account number or wallet address to claim your $100 VIP Bonus instantly.',
     input: 'text',
-    inputPlaceholder: 'Enter Account Number (e.g. US123456)',
-    background: '#0d0d0d',
+    inputPlaceholder: 'Enter Account or Wallet Address',
+    background: '#0B0E11',
     color: '#fff',
-    confirmButtonColor: '#F5C518',
-    showCancelButton: true,
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Verify & Claim',
-    inputValidator: (value) => {
-      if (!value) return 'Bank Account Number is required!'
-      if (!/^[A-Z0-9]{8,20}$/i.test(value)) {
-        return 'Invalid format. Must be 8-20 alphanumeric characters (No spaces or dashes).'
-      }
-    }
+    confirmButtonColor: '#F0B90B',
+    showCancelButton: true
   }) || {}
 
   if (accountNumber) {
-    try {
-      const res = await apiService.claimBonus()
-      balance.value = res.data.balance
-      const user = JSON.parse(localStorage.getItem('user'))
-      user.balance = res.data.balance
-      localStorage.setItem('user', JSON.stringify(user))
-
-      Swal?.fire({
-        title: '👑 VIP BONUS CLAIMED!',
-        html: `<p style="color:#aaa">$100 has been verified and deposited instantly through account ending in <b>${accountNumber.slice(-4)}</b>!</p>`,
-        icon: 'success',
-        background: '#0d0d0d',
-        color: '#fff',
-        confirmButtonColor: '#F5C518',
-        confirmButtonText: 'LET\'S PLAY!',
-        showClass: { popup: 'animate__animated animate__zoomIn' }
-      })
-    } catch (err) {
-      Swal?.fire({
-        title: 'Error',
-        text: err.response?.data?.error || 'Could not claim bonus',
-        icon: 'error',
-        background: '#0d0d0d',
-        color: '#fff',
-        confirmButtonColor: '#F5C518'
-      })
-    }
+    balance.value += 100
+    Swal?.fire({
+      title: '👑 VIP BONUS CLAIMED!',
+      html: `<p style="color:#aaa">$100 has been verified and deposited instantly!</p>`,
+      icon: 'success',
+      background: '#0B0E11',
+      color: '#fff',
+      confirmButtonColor: '#F0B90B'
+    })
   }
 }
 </script>

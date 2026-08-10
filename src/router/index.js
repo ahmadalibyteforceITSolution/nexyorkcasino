@@ -6,10 +6,12 @@ import RewardsView from '../views/RewardsView.vue'
 import BlogView from '../views/BlogView.vue'
 import BlogDetail from '../views/BlogDetail.vue'
 import DiscoveryDetail from '../views/DiscoveryDetail.vue'
+import EarnView from '../views/EarnView.vue'
 
 const routes = [
   { path: '/', name: 'home', component: HomeView },
   { path: '/arena', name: 'arena', component: ArenaView },
+  { path: '/earn', name: 'earn', component: EarnView },
   { path: '/wallet', name: 'wallet', component: WalletView },
   { path: '/rewards', name: 'rewards', component: RewardsView },
   { path: '/magazine', name: 'magazine', component: BlogView },
