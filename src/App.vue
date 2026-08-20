@@ -70,6 +70,9 @@
       @send="handleSendMessage"
     />
 
+    <!-- Global VIP Moodboard Pick & Drop Drawer -->
+    <MoodboardDrawer />
+
     <!-- Binance Exchange Footer -->
     <Footer />
   </div>
@@ -82,6 +85,7 @@ import { apiService, API_BASE_URL } from './services/api'
 import ThreeDBackgroundCanvas from './components/ThreeDBackgroundCanvas.vue'
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
+import MoodboardDrawer from './components/MoodboardDrawer.vue'
 import UserDashboard from './components/UserDashboard.vue'
 import AuthModal from './components/AuthModal.vue'
 import TokenBuyModal from './components/TokenBuyModal.vue'

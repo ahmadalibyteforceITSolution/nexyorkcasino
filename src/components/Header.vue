@@ -29,6 +29,9 @@
         <router-link to="/rewards" class="hover:text-[#F0B90B] transition-colors">Rewards</router-link>
         <router-link to="/wallet" class="hover:text-[#F0B90B] transition-colors">Wallet</router-link>
         <router-link to="/magazine" class="hover:text-[#F0B90B] transition-colors">Magazine</router-link>
+        <a href="https://www.binance.com/en/academy" target="_blank" rel="noopener noreferrer" class="hover:text-[#F0B90B] transition-colors flex items-center gap-1">
+          Academy <span class="text-[9px] text-[#F0B90B]">↗</span>
+        </a>
       </div>
 
       <div v-if="currentUser" class="flex items-center gap-2 md:gap-3">

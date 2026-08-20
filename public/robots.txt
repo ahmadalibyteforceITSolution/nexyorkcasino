@@ -1,13 +1,47 @@
+# NexYork Elite Casino & Binance NYC Exchange - Robots Configuration
+# https://nexyorkcasino.vercel.app/
+
 User-agent: *
 Allow: /
+Allow: /magazine
+Allow: /magazine/*
+Allow: /arena
+Allow: /earn
+Allow: /wallet
+Allow: /rewards
+Allow: /assets/
+Allow: /favicon.png
+Allow: /favicon.svg
 Disallow: /api/
-Disallow: /*?*
 Disallow: /admin
+Disallow: /*?*preview=true
 
 User-agent: Googlebot
 Allow: /
+Allow: /magazine/*
+Allow: /sitemap.xml
+
+User-agent: Googlebot-Image
+Allow: /
+Allow: /assets/
+Allow: /*.png
+Allow: /*.jpg
+Allow: /*.jpeg
+Allow: /*.svg
 
 User-agent: Bingbot
 Allow: /
+Allow: /magazine/*
 
+User-agent: Applebot
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+# Sitemap Index Reference
 Sitemap: https://nexyorkcasino.vercel.app/sitemap.xml
+Host: https://nexyorkcasino.vercel.app

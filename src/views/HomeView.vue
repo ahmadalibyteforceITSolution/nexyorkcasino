@@ -5,6 +5,7 @@
     <LiveTracker :matches="matches" @add-to-slip="$emit('add-to-slip', $event)" />
     <CasinoLive @place-bet="$emit('place-bet', $event)" />
     <Discovery />
+    <NycCryptoSeoHub />
   </div>
 </template>
 
@@ -14,6 +15,7 @@ import Features from '../components/Features.vue'
 import LiveTracker from '../components/LiveTracker.vue'
 import CasinoLive from '../components/CasinoLive.vue'
 import Discovery from '../components/Discovery.vue'
+import NycCryptoSeoHub from '../components/NycCryptoSeoHub.vue'
 
 defineProps({
   matches: Array

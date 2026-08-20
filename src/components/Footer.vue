@@ -16,21 +16,21 @@
               <span class="text-[#F0B90B]">NEX</span>YORK <span class="text-xs font-bold text-gray-400 bg-white/5 px-2.5 py-1 rounded border border-white/10">BINANCE EXCHANGE</span>
             </div>
           </router-link>
-          <p class="text-gray-400 text-xs max-w-md font-medium leading-relaxed">
-            The premier digital crypto exchange & high-stakes arena in New York City. Licensed multi-chain trading, SAFU vault protection, and 24/7 global liquidity.
+          <p class="text-gray-400 text-xs max-w-md font-medium leading-relaxed font-sans">
+            The premier digital crypto exchange, luxury romance magazine & high-stakes arena in New York City. Multi-chain liquidity, SAFU vault protection, and 24/7 VIP concierge.
           </p>
         </div>
 
         <!-- Newsletter Subscription Form -->
         <div class="lg:col-span-6 glass p-6 rounded-3xl border-[#F0B90B]/20 bg-[#161618]">
           <div class="text-xs font-black text-[#F0B90B] uppercase tracking-widest mb-2 flex items-center gap-2">
-            <VueIcon name="envelope" size="1.2em" /> BINANCE MARKET INSIGHTS NEWSLETTER
+            <VueIcon name="envelope" size="1.2em" /> VIP MARKET & ROMANCE GAZETTE NEWSLETTER
           </div>
           <div class="flex flex-col sm:flex-row gap-3">
             <input 
               v-model="email" 
               type="email" 
-              placeholder="Enter your Gmail / Email..." 
+              placeholder="Enter your VIP Gmail / Email address..." 
               class="flex-1 bg-white/5 border border-white/10 rounded-2xl py-3 px-5 text-xs text-white outline-none focus:border-[#F0B90B] transition-all font-mono"
             >
             <button @click="subscribeNewsletter" class="btn-primary py-3 px-6 text-xs uppercase tracking-widest whitespace-nowrap">
@@ -45,36 +45,38 @@
         <div>
           <h4 class="font-black text-[#F0B90B] text-xs uppercase tracking-[0.2em] mb-4 font-outfit">PLATFORM PRODUCTS</h4>
           <ul class="space-y-2.5 font-medium text-gray-400">
-            <li><router-link to="/arena" class="hover:text-white transition-colors">Global Live Arena</router-link></li>
-            <li><router-link to="/" class="hover:text-white transition-colors">Spot & Futures Exchange</router-link></li>
-            <li><router-link to="/earn" class="hover:text-white transition-colors text-[#F0B90B]">Earn 20% Affiliate</router-link></li>
-            <li><router-link to="/wallet" class="hover:text-white transition-colors">Crypto & Fiat Wallet</router-link></li>
-            <li><router-link to="/rewards" class="hover:text-white transition-colors">VIP Platinum Perks</router-link></li>
+            <li><router-link to="/arena" class="hover:text-[#F0B90B] transition-colors">Global Live Arena</router-link></li>
+            <li><router-link to="/" class="hover:text-[#F0B90B] transition-colors">Spot & Futures Exchange</router-link></li>
+            <li><router-link to="/earn" class="hover:text-[#F0B90B] transition-colors text-[#F0B90B]">Earn 20% Affiliate</router-link></li>
+            <li><router-link to="/wallet" class="hover:text-[#F0B90B] transition-colors">Crypto & Cold Wallet</router-link></li>
+            <li><router-link to="/rewards" class="hover:text-[#F0B90B] transition-colors">VIP Platinum Perks</router-link></li>
           </ul>
         </div>
 
         <div>
-          <h4 class="font-black text-[#F0B90B] text-xs uppercase tracking-[0.2em] mb-4 font-outfit">BINANCE MAGAZINE</h4>
+          <h4 class="font-black text-[#F0B90B] text-xs uppercase tracking-[0.2em] mb-4 font-outfit">NEXYORK MAGAZINE</h4>
           <ul class="space-y-2.5 font-medium text-gray-400">
-            <li><router-link to="/magazine" class="hover:text-white transition-colors">All Crypto Articles</router-link></li>
-            <li><router-link to="/magazine/lust-and-luxury-nyc-nightlife" class="hover:text-white transition-colors">Lifestyle & VIP Scene</router-link></li>
-            <li><router-link to="/magazine/the-psychology-of-the-all-in-bluff" class="hover:text-white transition-colors">Poker & Trading Strategy</router-link></li>
-            <li><router-link to="/magazine/crypto-glamour-the-new-rich" class="hover:text-white transition-colors">Market & Web3 Trends</router-link></li>
+            <li><router-link to="/magazine" class="hover:text-[#F0B90B] transition-colors">All 75+ Exclusive Stories</router-link></li>
+            <li><router-link to="/magazine/lust-and-luxury-nyc-nightlife" class="hover:text-[#F0B90B] transition-colors">Manhattan VIP Nightlife</router-link></li>
+            <li><router-link to="/magazine/the-psychology-of-the-all-in-bluff" class="hover:text-[#F0B90B] transition-colors">Poker & Bluff Psychology</router-link></li>
+            <li><router-link to="/magazine/casanova-of-the-casino-floor" class="hover:text-[#F0B90B] transition-colors">Romance & Casino Allure</router-link></li>
+            <li><router-link to="/magazine/crypto-glamour-the-new-rich" class="hover:text-[#F0B90B] transition-colors">Crypto Glamour Trends</router-link></li>
           </ul>
         </div>
 
         <div>
-          <h4 class="font-black text-[#F0B90B] text-xs uppercase tracking-[0.2em] mb-4 font-outfit">SECURITY & PROOF</h4>
+          <h4 class="font-black text-[#F0B90B] text-xs uppercase tracking-[0.2em] mb-4 font-outfit">AUTHORITY & BACKLINKS</h4>
           <ul class="space-y-2.5 font-medium text-gray-400">
-            <li class="flex items-center gap-2 text-[#0ECB81]"><VueIcon name="shield" size="1.2em" /> SAFU $1.2B Cold Vault</li>
-            <li class="flex items-center gap-2 text-green-400"><VueIcon name="lock" size="1.2em" /> AES-256 SSL Encryption</li>
-            <li class="flex items-center gap-2 text-blue-400"><VueIcon name="key" size="1.2em" /> 2FA Security Protected</li>
-            <li><a href="#" @click.prevent="showProofReserves" class="hover:text-white transition-colors">Proof of Reserves 1:1</a></li>
+            <li><a href="https://gaming.ny.gov" target="_blank" rel="noopener noreferrer" class="hover:text-[#F0B90B] transition-colors flex items-center justify-between"><span>NY State Gaming Comm.</span> <span>↗</span></a></li>
+            <li><a href="https://www.nyctourism.com" target="_blank" rel="noopener noreferrer" class="hover:text-[#F0B90B] transition-colors flex items-center justify-between"><span>NYC Tourism Bureau</span> <span>↗</span></a></li>
+            <li><a href="https://www.bloomberg.com/crypto" target="_blank" rel="noopener noreferrer" class="hover:text-[#F0B90B] transition-colors flex items-center justify-between"><span>Bloomberg Crypto</span> <span>↗</span></a></li>
+            <li><a href="https://coinmarketcap.com" target="_blank" rel="noopener noreferrer" class="hover:text-[#F0B90B] transition-colors flex items-center justify-between"><span>CoinMarketCap Index</span> <span>↗</span></a></li>
+            <li><a href="https://academy.binance.com" target="_blank" rel="noopener noreferrer" class="hover:text-[#F0B90B] transition-colors flex items-center justify-between"><span>Binance Web3 Academy</span> <span>↗</span></a></li>
           </ul>
         </div>
 
         <div>
-          <h4 class="font-black text-[#F0B90B] text-xs uppercase tracking-[0.2em] mb-4 font-outfit">COMMUNITY & SOCIAL</h4>
+          <h4 class="font-black text-[#F0B90B] text-xs uppercase tracking-[0.2em] mb-4 font-outfit">SECURITY & COMMUNITY</h4>
           <div class="flex gap-3 mb-4">
             <a href="https://twitter.com" target="_blank" aria-label="Twitter X" class="w-9 h-9 rounded-xl bg-white/5 hover:bg-[#F0B90B] hover:text-black border border-white/10 flex items-center justify-center transition-all">
               <VueIcon name="twitter" size="1.2em" />
@@ -89,20 +91,24 @@
               <VueIcon name="youtube" size="1.2em" />
             </a>
           </div>
-          <div class="text-[10px] text-gray-500 uppercase font-mono">Server Status: <span class="text-[#0ECB81]">100% Operational (5ms)</span></div>
+          <div class="text-[10px] text-gray-500 uppercase font-mono space-y-1">
+            <div>Cold Vault: <span class="text-[#0ECB81] font-bold">SAFU $1.2B Audited</span></div>
+            <div>Latency: <span class="text-[#0ECB81]">5ms Global Route</span></div>
+          </div>
         </div>
       </div>
 
       <!-- Legal Disclaimer & Copyright -->
       <div class="pt-8 border-t border-white/10 text-[10px] text-gray-500 font-sans leading-relaxed space-y-4">
         <p>
-          <b>RISK WARNING</b>: Trading digital assets and playing casino games involves significant market and financial risk. Past performance is not indicative of future results. Please ensure you fully understand the risks involved before participating. NexYork operates under license US-NY 10001.
+          <b>REGULATORY NOTICE & RISK WARNING</b>: Digital assets trading and casino gaming involve market risk and volatility. Operating in compliance with New York State regulations under jurisdiction US-NY 10001. All editorial articles in the NexYork Magazine are independently curated for informational and entertainment purposes.
         </p>
         <div class="flex flex-col sm:flex-row justify-between items-center gap-4 text-gray-400">
-          <div>© 2026 NexYork Casino Exchange. All Rights Reserved.</div>
+          <div>© 2026 NexYork Elite Casino & Sports Exchange. All Rights Reserved.</div>
           <div class="flex gap-4">
             <a href="#" class="hover:underline">Privacy Policy</a>
             <a href="#" class="hover:underline">Terms of Service</a>
+            <a href="#" class="hover:underline">Responsible Gaming</a>
             <a href="#" class="hover:underline">AdSense Policy</a>
           </div>
         </div>
@@ -128,7 +134,7 @@ const subscribeNewsletter = () => {
   if (typeof window.Swal !== 'undefined') {
     window.Swal.fire({
       title: 'SUBSCRIBED!',
-      text: `Market updates & VIP bonus drops will be sent to ${userEmail}!`,
+      text: `Exclusive market updates & VIP bonus drops will be sent to ${userEmail}!`,
       icon: 'success',
       background: '#0B0E11',
       color: '#fff',
@@ -136,19 +142,6 @@ const subscribeNewsletter = () => {
     })
   } else {
     alert('Subscribed successfully!')
-  }
-}
-
-const showProofReserves = () => {
-  if (typeof window.Swal !== 'undefined') {
-    window.Swal.fire({
-      title: 'PROOF OF RESERVES 1:1',
-      html: '<p class="text-xs text-gray-300">NexYork holds 100% of user assets in audited multi-sig cold wallets on Bitcoin, Ethereum, and BNB Smart Chain.</p>',
-      icon: 'info',
-      background: '#0B0E11',
-      color: '#fff',
-      confirmButtonColor: '#F0B90B'
-    })
   }
 }
 </script>
