@@ -1,5 +1,5 @@
 <template>
-  <canvas ref="canvasRef" class="fixed inset-0 pointer-events-none z-0 opacity-40"></canvas>
+  <canvas ref="canvasRef" class="fixed inset-0 pointer-events-none z-0 opacity-30"></canvas>
 </template>
 
 <script setup>
@@ -25,23 +25,18 @@ onMounted(() => {
   window.addEventListener('resize', handleResize)
 
   const handleMouseMove = (e) => {
-    mouseX = (e.clientX - width / 2) * 0.05
-    mouseY = (e.clientY - height / 2) * 0.05
+    mouseX = (e.clientX - width / 2) * 0.03
+    mouseY = (e.clientY - height / 2) * 0.03
   }
   window.addEventListener('mousemove', handleMouseMove)
 
-  // 3D Particles & Floating Crypto Cubes/Coins
-  const particles = Array.from({ length: 65 }, () => ({
+  // Soft Ambient Glowing Particles (No dollar, diamond, or text symbols)
+  const particles = Array.from({ length: 45 }, () => ({
     x: (Math.random() - 0.5) * width * 1.5,
     y: (Math.random() - 0.5) * height * 1.5,
     z: Math.random() * 800 + 100,
-    size: Math.random() * 3 + 1.5,
-    rotX: Math.random() * Math.PI * 2,
-    rotY: Math.random() * Math.PI * 2,
-    speedRotX: (Math.random() - 0.5) * 0.02,
-    speedRotY: (Math.random() - 0.5) * 0.02,
-    symbol: ['₿', 'Ξ', '⚡', '💎', '$'][Math.floor(Math.random() * 5)],
-    color: Math.random() > 0.4 ? '#FF7A00' : '#FFA15C'
+    radius: Math.random() * 3 + 2,
+    color: Math.random() > 0.5 ? '#FF9E44' : '#FFA15C'
   }))
 
   const render = () => {
@@ -52,9 +47,7 @@ onMounted(() => {
     const fov = 400
 
     particles.forEach(p => {
-      p.rotX += p.speedRotX
-      p.rotY += p.speedRotY
-      p.z -= 0.5
+      p.z -= 0.4
 
       if (p.z <= 10) {
         p.z = 900
@@ -68,17 +61,13 @@ onMounted(() => {
 
       if (px > 0 && px < width && py > 0 && py < height) {
         ctx.save()
-        ctx.translate(px, py)
-        ctx.scale(scale * 1.5, scale * 1.5)
-        ctx.rotate(p.rotX)
-
-        ctx.font = 'bold 24px Outfit, sans-serif'
+        ctx.beginPath()
+        ctx.arc(px, py, p.radius * scale, 0, Math.PI * 2)
         ctx.fillStyle = p.color
         ctx.shadowColor = p.color
-        ctx.shadowBlur = 15 * scale
-        ctx.globalAlpha = Math.min(1, (1000 - p.z) / 800)
-        ctx.fillText(p.symbol, 0, 0)
-
+        ctx.shadowBlur = 12 * scale
+        ctx.globalAlpha = Math.min(0.6, (1000 - p.z) / 1200)
+        ctx.fill()
         ctx.restore()
       }
     })

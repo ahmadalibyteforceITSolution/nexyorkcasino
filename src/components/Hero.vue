@@ -48,14 +48,6 @@
         </router-link>
       </div>
     </div>
-
-    <!-- Floating 3D Gold Coin Emblem Visual -->
-    <div class="absolute bottom-12 right-12 z-20 pointer-events-none hidden xl:block animate-float-3d">
-      <div class="w-36 h-36 rounded-full border-4 border-orange-200 bg-gradient-to-br from-[#FF9E44] via-[#FF7A00] to-[#E65100] flex flex-col items-center justify-center text-white shadow-[0_15px_40px_rgba(255,122,0,0.35)] transform rotate-12">
-        <div class="text-3xl font-black">₿</div>
-        <div class="text-[8px] font-black tracking-widest uppercase mt-1">SAFU VAULT</div>
-      </div>
-    </div>
     
     <!-- Hero Live Winner Avatars -->
     <div class="mt-16 w-full max-w-5xl px-4 relative z-10">
