@@ -1,22 +1,23 @@
 @import "tailwindcss";
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap');
 
 @theme {
-  --color-primary: #F0B90B;
-  --color-primary-glow: rgba(240, 185, 11, 0.5);
-  --color-dark: #0B0E11;
-  --color-dark-card: #161618;
+  --color-primary: #FF7A00;
+  --color-primary-glow: rgba(255, 122, 0, 0.4);
+  --color-primary-light: #FFA15C;
+  --color-dark: #FAF8F5;
+  --color-dark-card: #FFFFFF;
   --font-outfit: "Outfit", sans-serif;
   --font-inter: "Plus Jakarta Sans", "Inter", sans-serif;
 }
 
 body {
-  @apply bg-[#0B0E11] text-white font-inter antialiased overflow-x-hidden selection:bg-[#F0B90B] selection:text-black;
+  @apply bg-[#FAF8F5] text-[#1E2329] font-inter antialiased overflow-x-hidden selection:bg-[#FF8C38] selection:text-white;
 }
 
 .text-gradient {
-  @apply bg-clip-text text-transparent bg-gradient-to-r from-[#F0B90B] via-yellow-400 to-[#F0B90B];
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-[#FF7A00] via-[#FF9E44] to-[#FF5500];
   background-size: 200% auto;
   animation: shine 4s linear infinite;
 }
@@ -26,11 +27,11 @@ body {
 }
 
 .glass {
-  @apply bg-white/[0.03] backdrop-blur-2xl border border-white/10;
+  @apply bg-white/85 backdrop-blur-2xl border border-[#FFE3CC]/70 shadow-[0_10px_30px_rgba(255,122,0,0.06)];
 }
 
 .btn-primary {
-  @apply relative overflow-hidden bg-gradient-to-r from-[#F0B90B] to-yellow-500 text-black font-black px-8 py-4 rounded-2xl shadow-[0_10px_30px_rgba(240,185,11,0.3)] hover:shadow-[0_15px_40px_rgba(240,185,11,0.5)] hover:-translate-y-1 transition-all active:scale-95 cursor-pointer select-none;
+  @apply relative overflow-hidden bg-gradient-to-r from-[#FF7A00] to-[#FFA15C] text-white font-black px-8 py-4 rounded-2xl shadow-[0_10px_30px_rgba(255,122,0,0.28)] hover:shadow-[0_15px_40px_rgba(255,122,0,0.45)] hover:-translate-y-1 transition-all active:scale-95 cursor-pointer select-none border border-orange-400/30;
 }
 
 .btn-primary::after {
@@ -53,18 +54,18 @@ body {
 }
 
 .card-3d:hover {
-  transform: translateY(-8px) rotateX(4deg) rotateY(-2deg) translateZ(12px);
-  box-shadow: 0 20px 50px rgba(240, 185, 11, 0.15), 0 0 20px rgba(255, 255, 255, 0.05);
+  transform: translateY(-8px) rotateX(3deg) rotateY(-2deg) translateZ(10px);
+  box-shadow: 0 20px 50px rgba(255, 122, 0, 0.12), 0 0 20px rgba(0, 0, 0, 0.04);
 }
 
 ::-webkit-scrollbar {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  @apply bg-[#0B0E11];
+  @apply bg-[#F4EFEA];
 }
 ::-webkit-scrollbar-thumb {
-  @apply bg-white/10 rounded-full hover:bg-[#F0B90B] transition-colors;
+  @apply bg-[#FFA15C] rounded-full hover:bg-[#FF7A00] transition-colors;
 }
 
 @keyframes float3d {
@@ -77,6 +78,6 @@ body {
 }
 
 .orb {
-  @apply absolute rounded-full blur-[120px] -z-10 opacity-30;
-  background: radial-gradient(circle, var(--color-primary) 0%, transparent 70%);
+  @apply absolute rounded-full blur-[120px] -z-10 opacity-40;
+  background: radial-gradient(circle, var(--color-primary-light) 0%, transparent 70%);
 }

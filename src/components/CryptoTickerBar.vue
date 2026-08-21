@@ -1,34 +1,34 @@
 <template>
-  <div class="bg-[#0B0E11] border-b border-white/10 py-1.5 px-4 text-xs font-mono select-none overflow-hidden relative z-50">
+  <div class="bg-[#FFF8F2] border-b border-[#FFE4D1] py-2 px-4 text-xs font-mono select-none overflow-hidden relative z-50 shadow-sm">
     <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
       
       <!-- Crypto Pairs Ticker Carousel -->
       <div class="flex items-center gap-6 overflow-x-auto no-scrollbar py-0.5">
-        <div class="flex items-center gap-2 text-[10px] font-black text-[#F0B90B] tracking-wider uppercase whitespace-nowrap border-r border-white/10 pr-4">
+        <div class="flex items-center gap-2 text-[10px] font-black text-[#FF7A00] tracking-wider uppercase whitespace-nowrap border-r border-[#FFD5BA] pr-4">
           <VueIcon name="chart" size="1.2em" />
           BINANCE SPOT LIVE
         </div>
 
-        <div v-for="ticker in tickers" :key="ticker.symbol" class="flex items-center gap-2 whitespace-nowrap cursor-pointer hover:bg-white/5 px-2 py-0.5 rounded transition-colors group">
-          <span class="font-bold text-gray-300 group-hover:text-[#F0B90B]">{{ ticker.displaySymbol }}</span>
-          <span class="font-black text-white" :class="ticker.priceDirection === 'up' ? 'text-[#0ECB81]' : ticker.priceDirection === 'down' ? 'text-[#F6465D]' : ''">
+        <div v-for="ticker in tickers" :key="ticker.symbol" class="flex items-center gap-2 whitespace-nowrap cursor-pointer hover:bg-orange-50 px-2.5 py-1 rounded-xl transition-all group border border-transparent hover:border-orange-200">
+          <span class="font-bold text-[#4A5568] group-hover:text-[#FF7A00]">{{ ticker.displaySymbol }}</span>
+          <span class="font-black text-[#1A202C]" :class="ticker.priceDirection === 'up' ? '!text-[#00A86B]' : ticker.priceDirection === 'down' ? '!text-[#E53E3E]' : ''">
             ${{ parseFloat(ticker.price).toLocaleString(undefined, { minimumFractionDigits: parseFloat(ticker.price) < 10 ? 4 : 2 }) }}
           </span>
-          <span class="text-[9px] font-black px-1.5 py-0.2 rounded" :class="parseFloat(ticker.change) >= 0 ? 'bg-[#0ECB81]/15 text-[#0ECB81]' : 'bg-[#F6465D]/15 text-[#F6465D]'">
+          <span class="text-[9px] font-black px-1.5 py-0.5 rounded-md" :class="parseFloat(ticker.change) >= 0 ? 'bg-[#00A86B]/10 text-[#00A86B]' : 'bg-[#E53E3E]/10 text-[#E53E3E]'">
             {{ parseFloat(ticker.change) >= 0 ? '+' : '' }}{{ parseFloat(ticker.change).toFixed(2) }}%
           </span>
         </div>
       </div>
 
       <!-- Quick SAFU & Security Stats -->
-      <div class="hidden lg:flex items-center gap-4 text-[10px] font-sans font-bold text-gray-400 whitespace-nowrap">
-        <div class="flex items-center gap-1.5 bg-[#0ECB81]/10 text-[#0ECB81] px-2.5 py-1 rounded-full border border-[#0ECB81]/20">
+      <div class="hidden lg:flex items-center gap-4 text-[10px] font-sans font-bold text-[#718096] whitespace-nowrap">
+        <div class="flex items-center gap-1.5 bg-orange-100/70 text-[#FF7A00] px-3 py-1 rounded-full border border-orange-200 shadow-xs">
           <VueIcon name="shield" size="1.1em" />
           <span>SAFU Vault $1.2B</span>
         </div>
-        <div class="flex items-center gap-1 text-gray-400">
-          <VueIcon name="lock" size="1.1em" class="text-green-400" />
-          <span>AES-256 SSL</span>
+        <div class="flex items-center gap-1 text-[#2D3748]">
+          <VueIcon name="lock" size="1.1em" class="text-[#00A86B]" />
+          <span>AES-256 SSL Verified</span>
         </div>
       </div>
     </div>

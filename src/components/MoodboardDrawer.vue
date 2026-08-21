@@ -6,10 +6,10 @@
       @dragover.prevent="isDragHovering = true"
       @dragleave="isDragHovering = false"
       @drop="handleDropOnButton"
-      class="fixed bottom-6 right-6 z-40 group flex items-center gap-3 px-5 py-3 rounded-full font-black text-xs tracking-widest uppercase transition-all duration-500 shadow-[0_10px_35px_rgba(240,185,11,0.35)] border border-[#F0B90B]/40"
+      class="fixed bottom-6 right-6 z-40 group flex items-center gap-3 px-5 py-3 rounded-full font-black text-xs tracking-widest uppercase transition-all duration-500 shadow-[0_10px_35px_rgba(255,122,0,0.35)] border border-orange-300 cursor-pointer"
       :class="[
-        isOpen ? 'bg-[#161618] text-[#F0B90B]' : 'bg-gradient-to-r from-[#F0B90B] to-[#ffaa00] text-black hover:scale-105',
-        isDragHovering ? 'scale-125 ring-4 ring-[#F0B90B] animate-pulse' : ''
+        isOpen ? 'bg-white text-[#FF7A00]' : 'bg-gradient-to-r from-[#FF7A00] to-[#FFA15C] text-white hover:scale-105',
+        isDragHovering ? 'scale-125 ring-4 ring-[#FF7A00] animate-pulse' : ''
       ]"
       title="Pick & Drop VIP Moodboard"
       aria-label="Toggle Moodboard"
@@ -18,13 +18,13 @@
         <i class="fa-solid fa-wand-magic-sparkles text-sm" :class="{ 'animate-spin': isDragHovering }"></i>
         <span 
           v-if="pinnedItems.length > 0"
-          class="absolute -top-3 -right-3 w-5 h-5 bg-red-600 text-white rounded-full text-[10px] flex items-center justify-center font-black border border-black shadow"
+          class="absolute -top-3 -right-3 w-5 h-5 bg-rose-600 text-white rounded-full text-[10px] flex items-center justify-center font-black border-2 border-white shadow"
         >
           {{ pinnedItems.length }}
         </span>
       </div>
       <span class="hidden sm:inline font-outfit">{{ isOpen ? 'CLOSE VIP BOARD' : 'VIP MOODBOARD' }}</span>
-      <span class="text-[9px] bg-black/20 px-2 py-0.5 rounded-full font-mono text-black font-extrabold hidden md:inline" v-if="!isOpen">
+      <span class="text-[9px] bg-white/30 px-2 py-0.5 rounded-full font-mono font-extrabold hidden md:inline text-white" v-if="!isOpen">
         PICK & DROP
       </span>
     </button>
@@ -32,7 +32,7 @@
     <!-- Slide-over Drawer / Canvas -->
     <div 
       v-if="isOpen"
-      class="fixed inset-0 z-50 overflow-hidden backdrop-blur-sm bg-black/60 transition-opacity"
+      class="fixed inset-0 z-50 overflow-hidden backdrop-blur-sm bg-black/40 transition-opacity"
       @click.self="isOpen = false"
     >
       <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
@@ -40,28 +40,28 @@
           @dragover.prevent="isDragHovering = true"
           @dragleave="isDragHovering = false"
           @drop="handleDrop"
-          class="w-screen max-w-md bg-[#121418] border-l border-white/10 p-6 md:p-8 flex flex-col justify-between shadow-2xl relative overflow-y-auto"
-          :class="{ 'ring-4 ring-[#F0B90B]/50 bg-[#1a1d24]': isDragHovering }"
+          class="w-screen max-w-md bg-[#FAF8F5] border-l border-[#E2D9CE] p-6 md:p-8 flex flex-col justify-between shadow-2xl relative overflow-y-auto"
+          :class="{ 'ring-4 ring-[#FF7A00]/50 bg-orange-50/50': isDragHovering }"
         >
           <!-- Top Header -->
           <div>
-            <div class="flex items-center justify-between pb-6 border-b border-white/10">
+            <div class="flex items-center justify-between pb-6 border-b border-[#EFE8DF]">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-2xl bg-[#F0B90B]/20 border border-[#F0B90B]/30 flex items-center justify-center text-[#F0B90B]">
+                <div class="w-10 h-10 rounded-2xl bg-orange-100 border border-orange-200 flex items-center justify-center text-[#FF7A00]">
                   <i class="fa-solid fa-gem text-lg"></i>
                 </div>
                 <div>
-                  <h3 class="font-outfit font-black text-lg uppercase tracking-tight text-white flex items-center gap-2">
-                    VIP Moodboard <span class="text-[10px] text-[#F0B90B] px-2 py-0.5 rounded bg-[#F0B90B]/10 border border-[#F0B90B]/20">PRO</span>
+                  <h3 class="font-outfit font-black text-lg uppercase tracking-tight text-[#1A202C] flex items-center gap-2">
+                    VIP Moodboard <span class="text-[10px] text-[#FF7A00] px-2 py-0.5 rounded-full bg-orange-100/70 border border-orange-200">PRO</span>
                   </h3>
-                  <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">
+                  <p class="text-[10px] text-[#718096] font-bold uppercase tracking-widest">
                     Pick, Drag & Drop Your Curated Luxury
                   </p>
                 </div>
               </div>
               <button 
                 @click="isOpen = false" 
-                class="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white flex items-center justify-center text-sm transition-all"
+                class="w-9 h-9 rounded-xl bg-white hover:bg-orange-50 text-[#718096] hover:text-[#1A202C] flex items-center justify-center text-sm transition-all border border-[#E2D9CE] cursor-pointer"
               >
                 ✕
               </button>
@@ -70,16 +70,16 @@
             <!-- Drag & Drop Dropzone Banner -->
             <div 
               class="mt-6 p-4 rounded-2xl border-2 border-dashed transition-all flex items-center gap-3 text-left"
-              :class="isDragHovering ? 'border-[#F0B90B] bg-[#F0B90B]/10 scale-105' : 'border-white/10 bg-white/5'"
+              :class="isDragHovering ? 'border-[#FF7A00] bg-orange-100/50 scale-103' : 'border-orange-200 bg-white shadow-2xs'"
             >
-              <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-[#F0B90B] text-base flex-shrink-0">
+              <div class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center text-[#FF7A00] text-base flex-shrink-0 border border-orange-200">
                 <i class="fa-solid fa-hand-pointer animate-bounce"></i>
               </div>
               <div>
-                <div class="text-xs font-black uppercase text-white tracking-wide">
+                <div class="text-xs font-black uppercase text-[#1A202C] tracking-wide">
                   {{ isDragHovering ? 'Release to Drop into Board!' : 'Drop Photos & Stories Here' }}
                 </div>
-                <div class="text-[10px] text-gray-400">
+                <div class="text-[10px] text-[#718096]">
                   Drag any blog image, VIP card, or quote into this panel.
                 </div>
               </div>
@@ -87,23 +87,23 @@
 
             <!-- Items List -->
             <div class="mt-6 space-y-4">
-              <div class="flex items-center justify-between text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+              <div class="flex items-center justify-between text-[11px] font-bold text-[#718096] uppercase tracking-wider">
                 <span>Pinned Items ({{ pinnedItems.length }})</span>
                 <button 
                   v-if="pinnedItems.length > 0"
                   @click="clearAll" 
-                  class="text-red-400 hover:underline text-[10px]"
+                  class="text-rose-500 hover:underline text-[10px] font-black cursor-pointer"
                 >
                   Clear All
                 </button>
               </div>
 
               <!-- Empty State -->
-              <div v-if="pinnedItems.length === 0" class="text-center py-12 px-4 rounded-3xl border border-white/5 bg-white/5">
-                <i class="fa-regular fa-images text-4xl text-gray-600 mb-3 block"></i>
-                <h4 class="text-xs font-black uppercase text-gray-300 mb-1">Your Moodboard is Empty</h4>
-                <p class="text-[10px] text-gray-500 max-w-xs mx-auto leading-relaxed">
-                  Hover over any magazine story or photo and click <span class="text-[#F0B90B] font-bold">"Pick & Pin"</span> or simply drag & drop items right onto this panel.
+              <div v-if="pinnedItems.length === 0" class="text-center py-12 px-4 rounded-3xl border border-[#E2D9CE] bg-white shadow-2xs">
+                <i class="fa-regular fa-images text-4xl text-[#FFA15C] mb-3 block"></i>
+                <h4 class="text-xs font-black uppercase text-[#1A202C] mb-1">Your Moodboard is Empty</h4>
+                <p class="text-[10px] text-[#718096] max-w-xs mx-auto leading-relaxed">
+                  Hover over any magazine story or photo and click <span class="text-[#FF7A00] font-bold">"Pin to Board"</span> or drag & drop items right onto this panel.
                 </p>
               </div>
 
@@ -111,13 +111,13 @@
               <div 
                 v-for="(item, idx) in pinnedItems" 
                 :key="item.id || idx"
-                class="group relative rounded-2xl bg-[#1c1f26] border border-white/10 p-3.5 flex gap-3.5 items-center hover:border-[#F0B90B]/50 transition-all shadow-lg"
+                class="group relative rounded-2xl bg-white border border-[#E2D9CE] p-3.5 flex gap-3.5 items-center hover:border-orange-300 transition-all shadow-xs hover:shadow-md"
               >
                 <!-- Thumbnail / Image -->
                 <div 
                   v-if="item.image"
                   @click="openLightbox(item.image, item.title)"
-                  class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 cursor-pointer relative group/img border border-white/10"
+                  class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 cursor-pointer relative group/img border border-[#E2D9CE]"
                 >
                   <img :src="item.image" :alt="item.title" class="w-full h-full object-cover group-hover/img:scale-110 transition-transform">
                   <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 flex items-center justify-center transition-opacity text-white text-xs">
@@ -128,15 +128,15 @@
                 <!-- Content text -->
                 <div class="flex-grow min-w-0">
                   <div class="flex items-center gap-2 mb-1">
-                    <span class="text-[9px] font-black uppercase text-[#F0B90B] bg-[#F0B90B]/10 px-2 py-0.5 rounded">
+                    <span class="text-[9px] font-black uppercase text-[#FF7A00] bg-orange-50 px-2 py-0.5 rounded border border-orange-200">
                       {{ item.category || 'VIP LUXURY' }}
                     </span>
-                    <span class="text-[9px] text-gray-500 font-mono">{{ item.type || 'STORY' }}</span>
+                    <span class="text-[9px] text-[#718096] font-mono">{{ item.type || 'STORY' }}</span>
                   </div>
-                  <h5 class="text-xs font-bold text-white truncate group-hover:text-[#F0B90B] transition-colors">
+                  <h5 class="text-xs font-bold text-[#1A202C] truncate group-hover:text-[#FF7A00] transition-colors">
                     {{ item.title }}
                   </h5>
-                  <p v-if="item.excerpt" class="text-[10px] text-gray-400 line-clamp-1 mt-0.5">
+                  <p v-if="item.excerpt" class="text-[10px] text-[#718096] line-clamp-1 mt-0.5">
                     {{ item.excerpt }}
                   </p>
                 </div>
@@ -144,7 +144,7 @@
                 <!-- Remove item -->
                 <button 
                   @click="removeItem(idx)" 
-                  class="w-7 h-7 rounded-lg bg-white/5 hover:bg-red-500/20 text-gray-500 hover:text-red-400 flex items-center justify-center text-xs flex-shrink-0 transition-colors"
+                  class="w-7 h-7 rounded-lg bg-[#FAF8F5] hover:bg-rose-100 text-[#718096] hover:text-rose-600 flex items-center justify-center text-xs flex-shrink-0 transition-colors border border-[#E2D9CE] cursor-pointer"
                   title="Remove from board"
                 >
                   ✕
@@ -154,16 +154,16 @@
           </div>
 
           <!-- Bottom Actions -->
-          <div class="pt-6 mt-6 border-t border-white/10 space-y-3">
+          <div class="pt-6 mt-6 border-t border-[#EFE8DF] space-y-3">
             <button 
               @click="copyMoodboardSummary" 
               :disabled="pinnedItems.length === 0"
-              class="w-full btn-primary py-3.5 px-4 text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2 shadow-xl disabled:opacity-40 disabled:cursor-not-allowed"
+              class="w-full btn-primary py-3.5 px-4 text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2 shadow-md disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
             >
               <i class="fa-solid fa-share-nodes"></i>
               SHARE & EXPORT MOODBOARD
             </button>
-            <div class="text-[9px] text-center text-gray-500 uppercase tracking-widest font-mono">
+            <div class="text-[9px] text-center text-[#718096] uppercase tracking-widest font-mono">
               Auto-saves to browser memory & includes SEO citations
             </div>
           </div>
@@ -174,28 +174,28 @@
     <!-- Image Romance Lightbox Modal -->
     <div 
       v-if="lightboxImage" 
-      class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-md flex items-center justify-center p-4"
+      class="fixed inset-0 z-[100] bg-black/85 backdrop-blur-md flex items-center justify-center p-4"
       @click.self="lightboxImage = null"
     >
-      <div class="relative max-w-4xl w-full bg-[#121418] rounded-3xl overflow-hidden border border-[#F0B90B]/30 shadow-[0_0_50px_rgba(240,185,11,0.2)]">
+      <div class="relative max-w-4xl w-full bg-white rounded-3xl overflow-hidden border border-orange-200 shadow-2xl">
         <button 
           @click="lightboxImage = null" 
-          class="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-black/70 hover:bg-[#F0B90B] text-white hover:text-black flex items-center justify-center text-sm transition-all"
+          class="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-black/70 hover:bg-[#FF7A00] text-white flex items-center justify-center text-sm transition-all cursor-pointer"
         >
           ✕
         </button>
-        <div class="relative aspect-video max-h-[70vh] overflow-hidden bg-black">
+        <div class="relative aspect-video max-h-[70vh] overflow-hidden bg-[#1A202C]">
           <img :src="lightboxImage" :alt="lightboxTitle" class="w-full h-full object-contain">
         </div>
-        <div class="p-6 bg-[#161618] flex items-center justify-between">
+        <div class="p-6 bg-[#FAF8F5] flex items-center justify-between border-t border-[#EFE8DF]">
           <div>
-            <div class="text-[10px] font-black uppercase tracking-widest text-[#F0B90B] mb-1">Aesthetic Romance & Luxury Gallery</div>
-            <h4 class="text-sm font-black text-white uppercase">{{ lightboxTitle }}</h4>
+            <div class="text-[10px] font-black uppercase tracking-widest text-[#FF7A00] mb-1">Aesthetic Romance & Luxury Gallery</div>
+            <h4 class="text-sm font-black text-[#1A202C] uppercase">{{ lightboxTitle }}</h4>
           </div>
           <div class="flex gap-3">
             <button 
               @click="pinLightboxImage"
-              class="px-4 py-2 bg-[#F0B90B] text-black text-xs font-black uppercase rounded-xl tracking-wider hover:scale-105 transition-transform"
+              class="btn-primary px-4 py-2 text-xs font-black uppercase rounded-xl tracking-wider cursor-pointer"
             >
               <i class="fa-solid fa-thumbtack mr-1"></i> Pin to Board
             </button>
@@ -215,9 +215,6 @@ const pinnedItems = ref([])
 const lightboxImage = ref(null)
 const lightboxTitle = ref('')
 
-const Swal = window.Swal
-
-// Load saved pins from localStorage
 onMounted(() => {
   try {
     const saved = localStorage.getItem('nexyork_vip_moodboard')
@@ -226,7 +223,6 @@ onMounted(() => {
     }
   } catch (err) {}
 
-  // Global event listener for 1-click pin from any component
   window.addEventListener('nexyork:pick-item', handleExternalPick)
   window.addEventListener('nexyork:open-lightbox', handleExternalLightbox)
 })
@@ -245,7 +241,6 @@ const saveToStorage = () => {
 const handleExternalPick = (event) => {
   if (event.detail) {
     addItem(event.detail)
-    // Flash toast
     if (typeof window.Swal !== 'undefined') {
       window.Swal.fire({
         title: '👑 PINNED TO VIP MOODBOARD!',
@@ -253,8 +248,8 @@ const handleExternalPick = (event) => {
         icon: 'success',
         timer: 2000,
         showConfirmButton: false,
-        background: '#0B0E11',
-        color: '#fff'
+        background: '#FFFFFF',
+        color: '#1A202C'
       })
     }
   }
@@ -292,7 +287,6 @@ const clearAll = () => {
   saveToStorage()
 }
 
-// Drag & Drop handlers
 const handleDrop = (e) => {
   isDragHovering.value = false
   e.preventDefault()
@@ -355,11 +349,11 @@ const copyMoodboardSummary = () => {
   if (typeof window.Swal !== 'undefined') {
     window.Swal.fire({
       title: '📋 MOODBOARD COPIED!',
-      html: '<p class="text-xs text-gray-300">Your curated luxury collection and SEO backlinks are ready to paste and share on Telegram, X, Discord, or Instagram!</p>',
+      html: '<p class="text-xs text-gray-600">Your curated luxury collection and SEO backlinks are ready to paste and share on Telegram, X, Discord, or Instagram!</p>',
       icon: 'success',
-      background: '#0B0E11',
-      color: '#fff',
-      confirmButtonColor: '#F0B90B'
+      background: '#FFFFFF',
+      color: '#1A202C',
+      confirmButtonColor: '#FF7A00'
     })
   }
 }

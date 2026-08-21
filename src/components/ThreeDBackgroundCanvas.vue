@@ -41,7 +41,7 @@ onMounted(() => {
     speedRotX: (Math.random() - 0.5) * 0.02,
     speedRotY: (Math.random() - 0.5) * 0.02,
     symbol: ['₿', 'Ξ', '⚡', '💎', '$'][Math.floor(Math.random() * 5)],
-    color: Math.random() > 0.4 ? '#F0B90B' : '#0ECB81'
+    color: Math.random() > 0.4 ? '#FF7A00' : '#FFA15C'
   }))
 
   const render = () => {

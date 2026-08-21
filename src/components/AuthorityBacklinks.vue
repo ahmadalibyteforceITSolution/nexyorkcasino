@@ -1,19 +1,19 @@
 <template>
-  <section class="my-16 glass rounded-[35px] border border-white/10 p-8 md:p-12 relative overflow-hidden bg-[#161618]/90 font-outfit shadow-2xl">
-    <div class="absolute -top-24 -right-24 w-72 h-72 bg-[#F0B90B]/5 rounded-full blur-[90px] pointer-events-none"></div>
+  <section class="my-16 rounded-[35px] border border-[#E2D9CE] p-8 md:p-12 relative overflow-hidden bg-white font-outfit shadow-lg">
+    <div class="absolute -top-24 -right-24 w-72 h-72 bg-orange-100/30 rounded-full blur-[90px] pointer-events-none"></div>
 
     <div class="relative z-10">
       <!-- Section Header -->
       <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
         <div>
-          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#F0B90B]/10 border border-[#F0B90B]/30 text-[#F0B90B] text-[10px] font-black uppercase tracking-widest mb-3">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-orange-100/70 border border-orange-200 text-[#FF7A00] text-[10px] font-black uppercase tracking-widest mb-3">
             <i class="fa-solid fa-link"></i> VERIFIED AUTHORITY & INDUSTRY DIRECTORY
           </div>
-          <h3 class="text-2xl md:text-3xl font-black uppercase tracking-tight text-white font-outfit">
+          <h3 class="text-2xl md:text-3xl font-black uppercase tracking-tight text-[#1A202C] font-outfit">
             Official Regulatory, Market & <span class="text-gradient">Tourism Citations</span>
           </h3>
         </div>
-        <p class="text-xs text-gray-400 max-w-md font-sans leading-relaxed">
+        <p class="text-xs text-[#5A6474] max-w-md font-sans leading-relaxed">
           NexYork partners with leading global web3 institutions, state gaming commissions, and luxury travel networks for maximum transparency and verifiable odds.
         </p>
       </div>
@@ -26,49 +26,52 @@
           :href="link.url"
           target="_blank"
           rel="noopener noreferrer"
-          class="group p-5 rounded-2xl bg-white/5 border border-white/5 hover:border-[#F0B90B]/40 hover:bg-[#1f222a] transition-all duration-300 flex flex-col justify-between"
+          class="group p-5 rounded-2xl bg-[#FAF8F5] border border-[#EAE2D7] hover:border-orange-300 hover:bg-orange-50/40 transition-all duration-300 flex flex-col justify-between shadow-2xs"
         >
           <div>
             <div class="flex items-center justify-between mb-3">
-              <span class="text-lg text-[#F0B90B] group-hover:scale-110 transition-transform">
+              <span class="text-lg text-[#FF7A00] group-hover:scale-110 transition-transform">
                 <i :class="link.icon"></i>
               </span>
-              <span class="text-[9px] font-black uppercase tracking-widest text-gray-500 bg-white/5 px-2 py-0.5 rounded border border-white/5 group-hover:text-white">
+              <span class="text-[9px] font-black uppercase tracking-widest text-[#718096] bg-white px-2 py-0.5 rounded border border-[#E2D9CE] group-hover:text-[#1A202C]">
                 {{ link.badge }}
               </span>
             </div>
-            <h4 class="text-sm font-black uppercase text-white group-hover:text-[#F0B90B] transition-colors mb-1.5 line-clamp-1">
+            <h4 class="text-sm font-black uppercase text-[#1A202C] group-hover:text-[#FF7A00] transition-colors mb-1.5 line-clamp-1">
               {{ link.title }}
             </h4>
-            <p class="text-[11px] text-gray-400 font-sans leading-relaxed line-clamp-2">
+            <p class="text-[11px] text-[#5A6474] font-sans leading-relaxed line-clamp-2">
               {{ link.description }}
             </p>
           </div>
 
-          <div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between text-[10px] font-bold text-gray-500 uppercase tracking-wider">
-            <span class="group-hover:text-white transition-colors">Official Source</span>
-            <span class="text-[#F0B90B] group-hover:translate-x-1 transition-transform">↗</span>
+          <div class="mt-4 pt-3 border-t border-[#EFE8DF] flex items-center justify-between text-[10px] font-bold text-[#718096] uppercase tracking-wider">
+            <span class="group-hover:text-[#1A202C] transition-colors">Official Source</span>
+            <span class="text-[#FF7A00] group-hover:translate-x-1 transition-transform font-black">↗</span>
           </div>
         </a>
       </div>
 
       <!-- Internal Quick Link Anchors -->
-      <div class="mt-10 pt-8 border-t border-white/10 flex flex-wrap items-center justify-between gap-4 text-xs">
-        <div class="text-[11px] font-bold text-gray-400 uppercase tracking-wider">
-          <i class="fa-solid fa-compass text-[#F0B90B] mr-2"></i> QUICK INTERNAL DIRECTORY:
+      <div class="mt-10 pt-8 border-t border-[#EFE8DF] flex flex-wrap items-center justify-between gap-4 text-xs">
+        <div class="text-[11px] font-bold text-[#718096] uppercase tracking-wider">
+          <i class="fa-solid fa-compass text-[#FF7A00] mr-2"></i> QUICK INTERNAL DIRECTORY:
         </div>
-        <div class="flex flex-wrap gap-3">
-          <router-link to="/arena" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 hover:text-[#F0B90B] text-[11px] font-bold transition-all border border-white/5">
+        <div class="flex flex-wrap gap-2.5">
+          <router-link to="/arena" class="px-3.5 py-1.5 rounded-xl bg-[#FAF8F5] hover:bg-orange-50 text-[#4A5568] hover:text-[#FF7A00] text-[11px] font-bold transition-all border border-[#E2D9CE]">
             🎰 Live Arena Tables
           </router-link>
-          <router-link to="/earn" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 hover:text-[#F0B90B] text-[11px] font-bold transition-all border border-white/5">
+          <router-link to="/earn" class="px-3.5 py-1.5 rounded-xl bg-[#FAF8F5] hover:bg-orange-50 text-[#4A5568] hover:text-[#FF7A00] text-[11px] font-bold transition-all border border-[#E2D9CE]">
             💰 20% Affiliate Program
           </router-link>
-          <router-link to="/rewards" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 hover:text-[#F0B90B] text-[11px] font-bold transition-all border border-white/5">
+          <router-link to="/rewards" class="px-3.5 py-1.5 rounded-xl bg-[#FAF8F5] hover:bg-orange-50 text-[#4A5568] hover:text-[#FF7A00] text-[11px] font-bold transition-all border border-[#E2D9CE]">
             👑 VIP Platinum Lounge
           </router-link>
-          <router-link to="/wallet" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 hover:text-[#F0B90B] text-[11px] font-bold transition-all border border-white/5">
+          <router-link to="/wallet" class="px-3.5 py-1.5 rounded-xl bg-[#FAF8F5] hover:bg-orange-50 text-[#4A5568] hover:text-[#FF7A00] text-[11px] font-bold transition-all border border-[#E2D9CE]">
             ⚡ Multi-Chain Cold Vault
+          </router-link>
+          <router-link to="/magazine" class="px-3.5 py-1.5 rounded-xl bg-[#FAF8F5] hover:bg-orange-50 text-[#4A5568] hover:text-[#FF7A00] text-[11px] font-bold transition-all border border-[#E2D9CE]">
+            📰 1000+ Articles Magazine
           </router-link>
         </div>
       </div>
@@ -136,11 +139,3 @@ const authorityLinks = [
   }
 ]
 </script>
-
-<style scoped>
-.text-gradient {
-  background: linear-gradient(135deg, #F0B90B 0%, #ff8800 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-</style>

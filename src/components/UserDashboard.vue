@@ -1,19 +1,19 @@
 <template>
-  <div class="fixed inset-0 z-[100] bg-dark flex flex-col md:flex-row overflow-hidden font-outfit">
+  <div class="fixed inset-0 z-[100] bg-[#FAF8F5] text-[#1E2329] flex flex-col md:flex-row overflow-hidden font-outfit">
     <!-- Mobile Header -->
-    <header class="md:hidden glass border-b border-white/5 p-4 flex justify-between items-center z-[110]">
-      <div class="font-black text-xl tracking-widest text-gradient" @click="$emit('close')">NEXYORK</div>
+    <header class="md:hidden bg-white border-b border-[#E2D9CE] p-4 flex justify-between items-center z-[110]">
+      <div class="font-black text-xl tracking-widest text-gradient cursor-pointer" @click="$emit('close')">NEXYORK</div>
       <div class="flex items-center gap-4">
-        <button @click="showBetSlip = true" aria-label="View Bet Slip" class="relative w-10 h-10 rounded-full glass flex items-center justify-center">
-          <i class="fa-solid fa-receipt text-primary"></i>
-          <span v-if="betSlip.length > 0" class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-[8px] flex items-center justify-center rounded-full text-white font-black">{{ betSlip.length }}</span>
+        <button @click="showBetSlip = true" aria-label="View Bet Slip" class="relative w-10 h-10 rounded-full bg-orange-50 border border-orange-200 flex items-center justify-center cursor-pointer">
+          <i class="fa-solid fa-receipt text-[#FF7A00]"></i>
+          <span v-if="betSlip.length > 0" class="absolute -top-1 -right-1 w-4 h-4 bg-rose-500 text-[8px] flex items-center justify-center rounded-full text-white font-black">{{ betSlip.length }}</span>
         </button>
-        <button @click="$emit('close')" aria-label="Close Dashboard" class="w-10 h-10 rounded-full glass flex items-center justify-center font-bold">✕</button>
+        <button @click="$emit('close')" aria-label="Close Dashboard" class="w-10 h-10 rounded-full bg-[#FAF8F5] border border-[#E2D9CE] flex items-center justify-center font-bold text-[#1A202C] cursor-pointer">✕</button>
       </div>
     </header>
 
     <!-- Sidebar (Hidden on mobile, replaced by bottom nav) -->
-    <aside class="hidden md:flex w-64 glass border-r border-white/5 p-6 flex-col justify-between">
+    <aside class="hidden md:flex w-64 bg-white border-r border-[#E2D9CE] p-6 flex-col justify-between shadow-sm">
       <div>
         <div class="font-outfit font-black text-2xl tracking-widest mb-10 text-gradient cursor-pointer" @click="$emit('close')">NEXYORK</div>
         <nav class="space-y-2">
@@ -21,8 +21,8 @@
             v-for="item in menu" 
             :key="item.id" 
             @click="activeTab = item.id"
-            class="w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all font-bold text-sm" 
-            :class="activeTab === item.id ? 'bg-primary text-black' : 'text-gray-400 hover:bg-white/5'"
+            class="w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all font-bold text-sm cursor-pointer" 
+            :class="activeTab === item.id ? 'bg-gradient-to-r from-[#FF7A00] to-[#FFA15C] text-white shadow-xs' : 'text-[#5A6474] hover:bg-orange-50 hover:text-[#1A202C]'"
           >
             <i :class="item.iconClass + ' w-5 text-center'"></i>
             {{ item.label }}
@@ -31,16 +31,16 @@
       </div>
       
       <div class="space-y-4">
-        <div class="bg-white/5 p-4 rounded-2xl border border-white/10 flex items-center gap-3">
-          <div class="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center text-primary font-black uppercase">{{ user?.username?.[0] || 'U' }}</div>
+        <div class="bg-[#FAF8F5] p-4 rounded-2xl border border-[#EAE2D7] flex items-center gap-3">
+          <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center text-[#FF7A00] font-black uppercase">{{ user?.username?.[0] || 'U' }}</div>
           <div class="min-w-0">
-            <div class="text-[10px] text-gray-500 font-bold uppercase truncate">Logged in</div>
-            <div class="text-sm font-black text-white truncate">{{ user?.username || 'Elite Player' }}</div>
+            <div class="text-[10px] text-[#718096] font-bold uppercase truncate">Logged in</div>
+            <div class="text-sm font-black text-[#1A202C] truncate">{{ user?.username || 'Elite Player' }}</div>
           </div>
         </div>
-        <div class="bg-white/5 p-4 rounded-2xl border border-white/10">
-          <div class="text-[9px] text-gray-500 font-bold uppercase mb-1">CASH BALANCE</div>
-          <div class="text-xl font-black text-primary">${{ balance.toLocaleString(undefined, { minimumFractionDigits: 2 }) }}</div>
+        <div class="bg-[#FAF8F5] p-4 rounded-2xl border border-[#EAE2D7]">
+          <div class="text-[9px] text-[#718096] font-bold uppercase mb-1">CASH BALANCE</div>
+          <div class="text-xl font-black text-[#FF7A00]">${{ balance.toLocaleString(undefined, { minimumFractionDigits: 2 }) }}</div>
         </div>
       </div>
     </aside>
@@ -49,12 +49,12 @@
     <main class="flex-1 overflow-y-auto p-4 md:p-10 space-y-6 md:space-y-10 custom-scrollbar relative pb-24 md:pb-10">
       <header class="hidden md:flex justify-between items-center">
         <div>
-          <h1 class="text-3xl font-black uppercase">
+          <h1 class="text-3xl font-black uppercase text-[#1A202C]">
             {{ activeTabLabel }}
           </h1>
-          <p class="text-gray-500 text-[10px] font-black uppercase tracking-widest mt-1">Real-time Data Synchronized via Google Global Feed</p>
+          <p class="text-[#718096] text-[10px] font-black uppercase tracking-widest mt-1">Real-time Data Synchronized via Google Global Feed</p>
         </div>
-        <button @click="$emit('close')" aria-label="Close Dashboard" class="w-10 h-10 rounded-full glass flex items-center justify-center font-bold hover:bg-red-500 transition-colors">✕</button>
+        <button @click="$emit('close')" aria-label="Close Dashboard" class="w-10 h-10 rounded-full bg-white border border-[#E2D9CE] flex items-center justify-center font-bold hover:bg-rose-500 hover:text-white transition-colors cursor-pointer">✕</button>
       </header>
       
       <!-- Mobile View Title -->

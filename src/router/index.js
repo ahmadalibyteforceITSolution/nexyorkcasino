@@ -48,13 +48,12 @@ router.afterEach((to) => {
     document.head.appendChild(canonical);
   }
   
-  // Use current browsing origin (e.g. localhost during dev, or live vercel domain in prod)
   const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://nexyorkcasino.vercel.app';
   const path = to.path === '/' ? '' : to.path.replace(/\/$/, '');
   canonical.setAttribute('href', `${baseUrl}${path}`);
 
   // Dynamic Title & Meta Tags
-  const siteTitle = 'NexYork - Elite Casino & Sports Exchange';
+  const siteTitle = 'NexYork - Elite Casino & Binance NYC Crypto Exchange';
   let pageTitle = siteTitle;
   let pageDesc = 'Experience the pulse of NYC gaming. Live casino, real-time sports betting, luxury romance lifestyle, and exclusive VIP rewards.';
   let pageImage = `${baseUrl}/favicon.png`;
@@ -72,14 +71,20 @@ router.afterEach((to) => {
       pageTitle = `${slugParts.join(' ')} | NexYork Magazine`;
     }
   } else if (to.name === 'magazine') {
-    pageTitle = 'VIP Crypto, Casino & Romance Magazine | NexYork Elite';
-    pageDesc = 'Explore 75+ exclusive articles on high-stakes trading strategies, provably fair casino systems, and lavish Manhattan romance & nightlife.';
+    pageTitle = 'VIP Crypto, Casino & Romance Magazine (1,000+ Articles) | NexYork Elite';
+    pageDesc = 'Explore 1,000+ exclusive articles on high-stakes trading strategies, provably fair casino systems, Bitcoin NY, and lavish Manhattan romance & nightlife.';
   } else if (to.name === 'arena') {
     pageTitle = 'Live Global Arena & Sports Betting | NexYork';
     pageDesc = 'Bet in real-time on live ESPN sports, Crash, Mines, and live dealer casino tables in NYC.';
   } else if (to.name === 'earn') {
     pageTitle = 'Earn 20% Affiliate Program & VIP Rewards | NexYork';
     pageDesc = 'Earn 20% lifetime commission on every referral wagered in the NexYork Arena.';
+  } else if (to.name === 'wallet') {
+    pageTitle = 'Crypto Wallet & SAFU Cold Vault | NexYork';
+    pageDesc = 'Multi-chain instant crypto deposits and withdrawals with military-grade AES-256 encryption.';
+  } else if (to.name === 'rewards') {
+    pageTitle = 'VIP Platinum Rewards & Cashback Lounge | NexYork';
+    pageDesc = 'Unlock tier-based VIP cashback, daily rakeback, exclusive penthouse invitations, and luxury gifts.';
   }
 
   document.title = pageTitle;

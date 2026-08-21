@@ -1,35 +1,43 @@
 <template>
-  <section id="discover" class="py-32 container mx-auto px-4">
-    <div class="text-center mb-24">
-      <div class="text-primary font-black text-xs tracking-[0.5em] uppercase mb-4">The VIP Guide</div>
-      <h2 class="font-outfit text-6xl md:text-7xl font-black mb-4 uppercase leading-none">CITY <span class="text-gradient">GLAMOUR</span></h2>
-      <p class="text-gray-400 max-w-xl mx-auto text-lg">Discover New York's most exclusive destinations for the elite.</p>
+  <section id="discover" class="py-24 container mx-auto px-4 max-w-7xl">
+    <div class="text-center mb-16">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-orange-100/70 border border-orange-200 text-[#FF7A00] font-black text-xs tracking-[0.3em] uppercase mb-3">
+        <i class="fa-solid fa-compass"></i> THE MANHATTAN VIP GUIDE
+      </div>
+      <h2 class="font-outfit text-4xl md:text-6xl font-black mb-3 uppercase leading-tight text-[#1A202C]">
+        CITY <span class="text-gradient">GLAMOUR</span>
+      </h2>
+      <p class="text-[#5A6474] max-w-xl mx-auto text-base">Discover New York's most exclusive destinations for high-stakes players and VIPs.</p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-      <div v-for="place in places" :key="place.id" class="glass rounded-[40px] overflow-hidden hover:scale-[1.05] transition-all duration-700 group shadow-2xl relative">
-        <div class="h-[550px] w-full bg-dark-card overflow-hidden">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div 
+        v-for="place in places" 
+        :key="place.id" 
+        class="bg-white rounded-[35px] overflow-hidden hover:scale-[1.03] transition-all duration-500 group shadow-md hover:shadow-2xl relative border border-[#E2D9CE]"
+      >
+        <div class="h-[480px] w-full bg-[#1A202C] overflow-hidden relative">
           <img 
             :src="place.image" 
             :alt="place.name" 
             loading="lazy"
             width="800"
             height="1200"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 brightness-75"
+            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 brightness-90"
           >
-          <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/20 to-transparent"></div>
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
           
-          <div class="absolute top-8 left-8 flex flex-col gap-2">
-            <span class="px-4 py-1.5 bg-primary text-black text-[10px] font-black rounded-full uppercase tracking-widest shadow-lg">{{ place.category }}</span>
-            <span v-if="place.vip" class="px-4 py-1.5 bg-white/10 backdrop-blur-md text-white text-[10px] font-black rounded-full uppercase tracking-widest border border-white/10">VIP EXCLUSIVE</span>
+          <div class="absolute top-6 left-6 flex flex-col gap-2">
+            <span class="px-3.5 py-1.5 bg-gradient-to-r from-[#FF7A00] to-[#FFA15C] text-white text-[10px] font-black rounded-full uppercase tracking-widest shadow-md">{{ place.category }}</span>
+            <span v-if="place.vip" class="px-3.5 py-1.5 bg-white/20 backdrop-blur-md text-white text-[10px] font-black rounded-full uppercase tracking-widest border border-white/20">VIP EXCLUSIVE</span>
           </div>
 
-          <div class="absolute bottom-8 left-8 right-8">
-            <h3 class="text-3xl font-black mb-2 uppercase tracking-tight font-outfit">{{ place.name }}</h3>
-            <p class="text-gray-300 text-sm font-medium leading-relaxed group-hover:text-white transition-colors">
+          <div class="absolute bottom-6 left-6 right-6">
+            <h3 class="text-2xl font-black mb-2 uppercase tracking-tight font-outfit text-white">{{ place.name }}</h3>
+            <p class="text-gray-200 text-xs font-medium leading-relaxed group-hover:text-white transition-colors">
               {{ place.desc }}
             </p>
-            <router-link :to="`/discovery/${place.id}`" class="mt-6 text-primary font-black text-xs uppercase tracking-widest flex items-center gap-2 group-hover:gap-4 transition-all inline-block">
+            <router-link :to="`/discovery/${place.id}`" class="mt-4 text-[#FFA15C] hover:text-[#FF7A00] font-black text-xs uppercase tracking-widest flex items-center gap-2 group-hover:gap-3 transition-all inline-block">
               EXPLORE HUB <span>➜</span>
             </router-link>
           </div>

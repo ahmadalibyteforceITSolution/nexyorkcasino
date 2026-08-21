@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-[#0B0E11] text-white overflow-x-hidden relative font-outfit">
+  <div class="min-h-screen bg-[#FAF8F5] text-[#1E2329] overflow-x-hidden relative font-outfit">
     <!-- Interactive 3D Background Canvas -->
     <ThreeDBackgroundCanvas />
 
@@ -261,9 +261,9 @@ const handlePlaceBet = () => {
       title: '🏆 Bets Placed!',
       text: `$${total} wagered across ${total / 100} bet(s). Good luck!`,
       icon: 'success',
-      background: '#0B0E11',
-      color: '#fff',
-      confirmButtonColor: '#F0B90B',
+      background: '#FFFFFF',
+      color: '#1E2329',
+      confirmButtonColor: '#FF7A00',
       timer: 3000
     })
   } else {
@@ -271,9 +271,9 @@ const handlePlaceBet = () => {
       title: 'Insufficient Balance',
       text: 'Please deposit funds to place bets.',
       icon: 'error',
-      background: '#0B0E11',
-      color: '#fff',
-      confirmButtonColor: '#F0B90B'
+      background: '#FFFFFF',
+      color: '#1E2329',
+      confirmButtonColor: '#FF7A00'
     })
   }
 }
@@ -303,9 +303,9 @@ const handleClaimBonus = async () => {
     text: 'Please enter your account number or wallet address to claim your $100 VIP Bonus instantly.',
     input: 'text',
     inputPlaceholder: 'Enter Account or Wallet Address',
-    background: '#0B0E11',
-    color: '#fff',
-    confirmButtonColor: '#F0B90B',
+    background: '#FFFFFF',
+    color: '#1E2329',
+    confirmButtonColor: '#FF7A00',
     showCancelButton: true
   }) || {}
 
@@ -313,11 +313,11 @@ const handleClaimBonus = async () => {
     balance.value += 100
     Swal?.fire({
       title: '👑 VIP BONUS CLAIMED!',
-      html: `<p style="color:#aaa">$100 has been verified and deposited instantly!</p>`,
+      html: `<p style="color:#5A6270">$100 has been verified and deposited instantly!</p>`,
       icon: 'success',
-      background: '#0B0E11',
-      color: '#fff',
-      confirmButtonColor: '#F0B90B'
+      background: '#FFFFFF',
+      color: '#1E2329',
+      confirmButtonColor: '#FF7A00'
     })
   }
 }
