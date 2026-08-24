@@ -1,78 +1,11 @@
-# NexYork Elite Casino & Binance NYC Exchange - Comprehensive Robots Configuration
+# NexYork Elite Casino & Binance NYC Exchange
 # https://nexyorkcasino.vercel.app/
 
 User-agent: *
 Allow: /
-Allow: /magazine
-Allow: /magazine/*
-Allow: /arena
-Allow: /earn
-Allow: /wallet
-Allow: /rewards
-Allow: /discovery/*
-Allow: /assets/
-Allow: /favicon.png
-Allow: /favicon.svg
-Allow: /sitemap.xml
 Disallow: /api/
 Disallow: /admin
 Disallow: /*?*preview=true
 
-# Google Search Engine Crawlers
-User-agent: Googlebot
-Allow: /
-Allow: /magazine
-Allow: /magazine/*
-Allow: /arena
-Allow: /earn
-Allow: /wallet
-Allow: /rewards
-Allow: /sitemap.xml
-
-User-agent: Googlebot-Image
-Allow: /
-Allow: /assets/
-Allow: /*.png
-Allow: /*.jpg
-Allow: /*.jpeg
-Allow: /*.svg
-Allow: /*.webp
-
-# Microsoft Bing Search
-User-agent: Bingbot
-Allow: /
-Allow: /magazine
-Allow: /magazine/*
-Allow: /sitemap.xml
-
-# Apple Bot
-User-agent: Applebot
-Allow: /
-Allow: /magazine
-Allow: /magazine/*
-
-# Social Media Crawlers & Link Previewers
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
-User-agent: LinkedInBot
-Allow: /
-
-User-agent: Pinterestbot
-Allow: /
-
-User-agent: DuckDuckBot
-Allow: /
-
-User-agent: Baiduspider
-Allow: /
-
-User-agent: YandexBot
-Allow: /
-
-# Sitemap Index Reference
 Sitemap: https://nexyorkcasino.vercel.app/sitemap.xml
 Host: https://nexyorkcasino.vercel.app

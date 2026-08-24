@@ -40,6 +40,13 @@ router.beforeEach((to, from, next) => {
 });
 
 router.afterEach((to) => {
+  const productionDomain = 'https://nexyorkcasino.vercel.app';
+  const baseUrl = (typeof window !== 'undefined' && !window.location.hostname.includes('localhost')) 
+    ? window.location.origin 
+    : productionDomain;
+  const path = to.path === '/' ? '' : to.path.replace(/\/$/, '');
+  const canonicalUrl = `${baseUrl}${path}`;
+
   // Update Canonical Tag (Self-referencing for SEO)
   let canonical = document.querySelector('link[rel="canonical"]');
   if (!canonical) {
@@ -47,13 +54,10 @@ router.afterEach((to) => {
     canonical.setAttribute('rel', 'canonical');
     document.head.appendChild(canonical);
   }
-  
-  const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://nexyorkcasino.vercel.app';
-  const path = to.path === '/' ? '' : to.path.replace(/\/$/, '');
-  canonical.setAttribute('href', `${baseUrl}${path}`);
+  canonical.setAttribute('href', canonicalUrl);
 
   // Dynamic Title & Meta Tags
-  const siteTitle = 'NexYork - Elite Casino & Binance NYC Crypto Exchange';
+  const siteTitle = 'NexYork - Binance New York Crypto Exchange & Sports Betting NYC';
   let pageTitle = siteTitle;
   let pageDesc = 'Experience the pulse of NYC gaming. Live casino, real-time sports betting, luxury romance lifestyle, and exclusive VIP rewards.';
   let pageImage = `${baseUrl}/favicon.png`;
@@ -64,15 +68,18 @@ router.afterEach((to) => {
     const article = blogs.find(b => b.slug === to.params.slug);
     if (article) {
       pageTitle = `${article.title} | NexYork Magazine`;
-      pageDesc = article.excerpt;
-      pageImage = article.image;
+      pageDesc = article.excerpt || pageDesc;
+      pageImage = article.image || pageImage;
     } else {
       const slugParts = to.params.slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1));
       pageTitle = `${slugParts.join(' ')} | NexYork Magazine`;
     }
+  } else if (to.name === 'discovery-detail' && to.params.id) {
+    pageTitle = `NYC Spot & Discovery ${to.params.id} | NexYork`;
+    pageDesc = `Explore premium nightlife, crypto lounges, and entertainment venues in New York City.`;
   } else if (to.name === 'magazine') {
-    pageTitle = 'VIP Crypto, Casino & Romance Magazine (1,000+ Articles) | NexYork Elite';
-    pageDesc = 'Explore 1,000+ exclusive articles on high-stakes trading strategies, provably fair casino systems, Bitcoin NY, and lavish Manhattan romance & nightlife.';
+    pageTitle = 'VIP Crypto, Casino & Romance Magazine | NexYork Elite';
+    pageDesc = 'Explore exclusive articles on high-stakes trading strategies, provably fair casino systems, Bitcoin NY, and lavish Manhattan romance & nightlife.';
   } else if (to.name === 'arena') {
     pageTitle = 'Live Global Arena & Sports Betting | NexYork';
     pageDesc = 'Bet in real-time on live ESPN sports, Crash, Mines, and live dealer casino tables in NYC.';
@@ -104,7 +111,17 @@ router.afterEach((to) => {
   if (ogImage) ogImage.setAttribute('content', pageImage);
 
   let ogUrl = document.querySelector('meta[property="og:url"]');
-  if (ogUrl) ogUrl.setAttribute('content', `${baseUrl}${path}`);
+  if (ogUrl) ogUrl.setAttribute('content', canonicalUrl);
+
+  // Update Twitter Cards
+  let twTitle = document.querySelector('meta[name="twitter:title"]');
+  if (twTitle) twTitle.setAttribute('content', pageTitle);
+
+  let twDesc = document.querySelector('meta[name="twitter:description"]');
+  if (twDesc) twDesc.setAttribute('content', pageDesc);
+
+  let twImage = document.querySelector('meta[name="twitter:image"]');
+  if (twImage) twImage.setAttribute('content', pageImage);
 });
 
 export default router
